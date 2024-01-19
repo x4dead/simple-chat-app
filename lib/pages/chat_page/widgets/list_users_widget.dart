@@ -1,12 +1,22 @@
 ﻿import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:simple_chat_app/models/models.dart';
+import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/widgets/custom_list_tile.dart';
+
+final List<UserDto> listUsers = List.generate(4, (index) {
+  return UserDto(
+      email: "email@mail.ru",
+      firstName: "Саша",
+      lastName: "Алексеев",
+      isOnline: false,
+      lastActive: DateTime(2024, 01, 19, 15, 50),
+      password: "123456",
+      uid: "uid");
+});
 
 class ListUserWidget extends ConsumerStatefulWidget {
   const ListUserWidget({super.key});
@@ -18,17 +28,6 @@ class ListUserWidget extends ConsumerStatefulWidget {
 class _ListUserWidgetState extends ConsumerState<ListUserWidget> {
   @override
   Widget build(BuildContext context) {
-    final List<UserDto> listUsers = List.generate(4, (index) {
-      return UserDto(
-          email: "email@mail.ru",
-          firstName: "Саша",
-          lastName: "Алексеев",
-          isOnline: false,
-          lastActive: DateTime(2024, 01, 19, 15, 50),
-          password: "123456",
-          uid: "uid");
-    });
-
     return Expanded(
       child: CustomScrollView(
         slivers: [
@@ -38,7 +37,10 @@ class _ListUserWidgetState extends ConsumerState<ListUserWidget> {
               return IntrinsicHeight(
                 child: CustomListTile(
                   onTap: () {
-                    // CupertinoPage(child: child)
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => const ChatPage()));
                   },
                   horizontalTitleGap: 12,
                   contentPadding: const EdgeInsets.fromLTRB(20, 10, 32, 10),

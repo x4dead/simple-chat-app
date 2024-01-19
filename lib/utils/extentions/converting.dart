@@ -22,7 +22,7 @@ class Converting {
     if (updatedDate.day == today &&
         updatedDate.month == now.month &&
         updatedDate.year == now.year &&
-        dateDiff.inMinutes < 60) {
+        (dateDiff.inMinutes < 60 && !dateDiff.inMinutes.isNegative)) {
       buffer.write('${dateDiff.inMinutes} минут назад');
     } else if (updatedDate.day == today &&
         updatedDate.month == now.month &&
