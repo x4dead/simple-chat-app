@@ -31,7 +31,7 @@ class CustomListTile extends StatelessWidget {
     this.topLeadingGap = 0,
     this.subTitleMaxLines,
     this.horizontalTrailingGap = 8,
-    this.topSubTitleGap,
+    this.topSubTitleGap = 0,
     this.leading,
     this.isLeadingTop = true,
     this.isTrailingTop = true,
@@ -41,6 +41,7 @@ class CustomListTile extends StatelessWidget {
     this.boxShadow,
     this.clipBehavior = Clip.none,
     this.bottomOverlineGap = 0,
+    this.subTitleWidget,
   });
   final EdgeInsetsGeometry? contentPadding;
   final String? leadingUrl;
@@ -51,6 +52,7 @@ class CustomListTile extends StatelessWidget {
   final String? subTitle;
   final String? overline;
   final Widget? overlineWidget;
+  final Widget? subTitleWidget;
   final Color? color;
   final bool? isTrailingTop;
   final bool? isLeadingTop;
@@ -133,13 +135,15 @@ class CustomListTile extends StatelessWidget {
                           style: titleStyle ?? TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: topSubTitleGap),
-                        if (subTitle != null)
+                        if (subTitle != null && subTitleWidget == null)
                           Text(
                             subTitle!,
                             overflow: TextOverflow.ellipsis,
                             style: subTitleStyle ?? TextStyle(),
                             maxLines: subTitleMaxLines,
                           ),
+                        if (subTitleWidget != null && subTitle == null)
+                          subTitleWidget!,
                         SizedBox(height: topOverlineGap),
                         if (overline != null && overlineWidget == null)
                           Text(
@@ -157,7 +161,7 @@ class CustomListTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: horizontalTitleGap),
+                  SizedBox(width: horizontalTrailingGap),
 
                   ///
                   ///TRAILING

@@ -1,6 +1,6 @@
 library feed_models.dart;
 
-// export 'src/character_models/all_characters.dart';
+export 'src/user_dto.dart';
 // export 'src/character_models/single_character.dart';
 // export 'src/episode_models/all_episodes.dart';
 // export 'src/episode_models/single_episode.dart';
