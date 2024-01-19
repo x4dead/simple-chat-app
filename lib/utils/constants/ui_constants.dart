@@ -24,6 +24,7 @@ const kSBH18 = SizedBox(height: 18);
 const kSBH26 = SizedBox(height: 26);
 const kSBH23 = SizedBox(height: 23);
 const kSBH60 = SizedBox(height: 60);
+const kSBH6 = SizedBox(height: 6);
 const kSBW4 = SizedBox(width: 4);
 const kSBW14 = SizedBox(width: 14);
 const kSBW2 = SizedBox(width: 2);

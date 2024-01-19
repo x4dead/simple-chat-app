@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/utils/router/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_chat_app/utils/router/router.dart';
 
 void main() async {
   //await AppInit.init();
@@ -13,8 +13,9 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = AppRouter.router;
+
     return MaterialApp.router(
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(useMaterial3: true, fontFamily: 'Gilroy'),
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,

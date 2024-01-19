@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/chat_page/chat_page.dart';
-import 'package:flutter_app/utils/router/fade_transition.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_chat_app/pages/chat_page/chat_list_page.dart';
+import 'package:simple_chat_app/utils/router/fade_transition.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -28,7 +28,7 @@ class AppRouter {
           path: '/chat',
           pageBuilder: (context, state) {
             return FadeTransitionPage(
-                child: const ChatPage(), key: state.pageKey);
+                child: const ChatListPage(), key: state.pageKey);
           },
         ),
         // StatefulShellRoute.indexedStack(
