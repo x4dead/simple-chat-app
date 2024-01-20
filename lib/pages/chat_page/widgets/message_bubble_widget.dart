@@ -24,7 +24,7 @@ class _MessageBubbleWidgetState extends ConsumerState<MessageBubbleWidget> {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer aliquet, nisi ac vestibulum mattis, nibh dui auctor mi, a tristique erat lacus quis libero. Fusce aliquam dictum ex a finibus. Nullam quis velit quis dui porta consectetur. Praesent dapibus mi eu elit viverra rutrum. Nam pulvinar lectus sit amet sem ullamcorper, ut varius ligula semper. Morbi mi erat, porttitor et varius sit amet, dignissim nec diam. Pellentesque vel enim quis sem sollicitudin iaculis. Morbi ac tempor felis. Aliquam erat volutpat. Sed at elementum dui, nec sodales dolor. Mauris tincidunt ipsum vitae nunc finibus, vel placerat lacus gravida. Praesent vestibulum quis neque vel mollis. Nullam a laoreet eros, in consectetur lectus. Ut feugiat arcu ante, vel maximus felis sollicitudin eu. Integer et ornare purus. Donec finibus auctor diam et blandit. Vestibulum eros ante, volutpat ac odio bibendum, lacinia egestas quam. Pellentesque pellentesque consequat auctor. Donec vel elit vitae nisi aliquam luctus tellus.';
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(bottom: 8, right: 6),
+      padding: const EdgeInsets.only(bottom: 8, right: 6),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -56,9 +56,9 @@ class _MessageBubbleWidgetState extends ConsumerState<MessageBubbleWidget> {
                   ),
                   child: SelectableText(
                     // maxLength1000,
-                    maxLength500,
+                    // maxLength500,
                     // '21:4121:4121:4121:4121:4121:4121:41DAdassdasdasdsaСделай мне кофе, пожалуйста',
-                    // 'Сделай мне кофе, пожалуйста',
+                    'Сделай мне кофе, пожалуйста',
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
