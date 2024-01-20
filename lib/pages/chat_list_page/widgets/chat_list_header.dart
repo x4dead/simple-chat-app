@@ -71,9 +71,7 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
                   color: AppColors.colorGray),
               constraints: const BoxConstraints(maxHeight: 42),
 
-              ///TODO
-              // contentPadding:
-              // const EdgeInsets.symmetric(horizontal: 9, vertical: 9),
+             
             ),
           ),
         ],

@@ -39,6 +39,12 @@ dependencies:
   cached_network_image: ^3.3.1
   flutter_svg: ^2.0.9
   intl: ^0.19.0
+  flutterfire_cli: ^0.2.7
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  cloud_firestore: ^4.14.0
+  firebase_utils: ^1.0.1
+  
 
 dev_dependencies:
   flutter_test:

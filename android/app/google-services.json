@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "703904848886",
+    "project_id": "simple-cupertino-chat-app",
+    "storage_bucket": "simple-cupertino-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703904848886:android:674897facf3e2efe3e45d7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfYvlpqIdZDhjVYn_5cUa8gTGtmzWc5bA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
