@@ -1,7 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/pages/chat_page/widgets/chat_list_header.dart';
-import 'package:simple_chat_app/pages/chat_page/widgets/list_users_widget.dart';
+import 'package:simple_chat_app/pages/chat_list_page/widgets/chat_list_header.dart';
+import 'package:simple_chat_app/pages/chat_list_page/widgets/list_users_widget.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 
 class ChatListPage extends ConsumerStatefulWidget {

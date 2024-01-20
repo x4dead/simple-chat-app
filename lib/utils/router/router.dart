@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_chat_app/pages/chat_page/chat_list_page.dart';
+import 'package:simple_chat_app/pages/chat_list_page/chat_list_page.dart';
 import 'package:simple_chat_app/utils/router/fade_transition.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();

@@ -1,12 +1,8 @@
-﻿// import 'package:extended_image/extended_image.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
+﻿
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-// import 'package:rick_and_morty/themes/colors/app_colors.dart';
-// import 'package:rick_and_morty/utils/resources/app_images.dart';
-// import 'package:sfera_web/utils/extentions/context_theme.dart';
-// import 'package:sfera_web/utils/resources/app_images.dart';
+
 
 class CustomListTile extends StatelessWidget {
   const CustomListTile({

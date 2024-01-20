@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/router/router.dart';
 
 void main() async {
@@ -15,7 +16,12 @@ class MainApp extends ConsumerWidget {
     final router = AppRouter.router;
 
     return MaterialApp.router(
-      theme: ThemeData(useMaterial3: true, fontFamily: 'Gilroy'),
+      theme: ThemeData(
+          useMaterial3: true,
+          fontFamily: 'Gilroy',
+          textSelectionTheme: TextSelectionThemeData(
+              selectionColor: AppColors.colorGray.withOpacity(0.5),
+              selectionHandleColor: AppColors.colorDarkGray)),
       debugShowCheckedModeBanner: false,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
