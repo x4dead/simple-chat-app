@@ -26,7 +26,7 @@ class _MessageListWidgetState extends ConsumerState<MessagesListWidget> {
                     ChatDateTimeWidget(
                         DateTime(2024, 01, 21).toIso8601String()),
                   kSBH20,
-                  const MessageBubbleWidget(),
+                  MessageBubbleWidget(index == 0 ? true : false),
                 ],
               );
             }),
