@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_chat_app/pages/auth/auth_page.dart';
 import 'package:simple_chat_app/pages/chat_list_page/chat_list_page.dart';
 import 'package:simple_chat_app/utils/router/fade_transition.dart';
+import 'package:simple_chat_app/utils/user_pref.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,11 +20,20 @@ class AppRouter {
       routes: <RouteBase>[
         GoRoute(
           path: '/',
-          redirect: (_, __) => '/chat',
+          redirect: (_, __) {
+            if (UserPref.getUserUid != '') {
+              return '/chat';
+            } else {
+              return '/auth';
+            }
+          },
         ),
         GoRoute(
           path: '/auth',
-          redirect: (_, __) => '/characters',
+          pageBuilder: (context, state) {
+            return FadeTransitionPage(
+                child: const AuthPage(), key: state.pageKey);
+          },
         ),
         GoRoute(
           path: '/chat',

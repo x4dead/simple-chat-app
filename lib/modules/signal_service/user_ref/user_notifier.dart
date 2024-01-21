@@ -7,7 +7,11 @@ import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.d
 class UserNotifier extends StateNotifier<UserStateRef> {
   final firebase = FirebaseFirestore.instance;
 
-  UserNotifier() : super(const UserStateRef()) {}
+  UserNotifier() : super(const UserStateRef());
+  setMainUser(UserDto user) {
+    state.copyWith(mainUser: user);
+  }
+
   Stream<List<UserDto>> getAllUsers() {
     List<UserDto> users = [];
     // await firebase.collection('users').doc("4234324325DS423dsdSAdsafewra46dSD464d6sawqe216S6").set(UserDto(

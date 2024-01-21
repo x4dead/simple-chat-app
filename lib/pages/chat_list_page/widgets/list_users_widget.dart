@@ -1,24 +1,13 @@
 ﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/models/models.dart';
+import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/pages/chat_list_page/chat_list_page.dart';
 import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/widgets/custom_list_tile.dart';
-
-final List<UserDto> listUsers = List.generate(4, (index) {
-  return UserDto(
-      email: "email@mail.ru",
-      firstName: "Саша",
-      lastName: "Алексеев",
-      isOnline: false,
-      lastActive: DateTime(2024, 01, 19, 15, 50),
-      password: "123456",
-      uid: "uid");
-});
 
 class ListUserWidget extends ConsumerWidget {
   const ListUserWidget({super.key});
@@ -42,6 +31,9 @@ class ListUserWidget extends ConsumerWidget {
                     return IntrinsicHeight(
                       child: CustomListTile(
                         onTap: () {
+                          ref
+                              .read(River.usersPod.notifier)
+                              .setMainUser(data[index]);
                           Navigator.push(
                               context,
                               CupertinoPageRoute(

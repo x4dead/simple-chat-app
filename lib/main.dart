@@ -5,13 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/firebase_options.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/router/router.dart';
+import 'package:simple_chat_app/utils/user_pref.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await UserPref.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
+
   runApp(const ProviderScope(child: MainApp()));
 }
 
