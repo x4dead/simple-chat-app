@@ -161,13 +161,15 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                               return const CupertinoActivityIndicator();
                             },
                           );
-                          await Future.delayed(Duration(seconds: 3));
+                          await Future.delayed(const Duration(seconds: 2));
                           await ref
                               .read(River.authPod.notifier)
                               .login(
                                   email: loginEmailController.text,
                                   password: loginPasswordController.text)
-                              .then((value) => context.go('/chat'));
+                              .then((value) {
+                            context.go('/chat');
+                          });
 
                           if (loadingCtx != null) {
                             Navigator.of(loadingCtx!).pop();

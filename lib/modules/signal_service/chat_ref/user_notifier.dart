@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/models/models.dart';
 
 import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.dart';
-import 'package:simple_chat_app/utils/user_pref.dart';
 
 class UserNotifier extends StateNotifier<UserStateRef> {
   final firebase = FirebaseFirestore.instance;
@@ -15,7 +14,15 @@ class UserNotifier extends StateNotifier<UserStateRef> {
 
   Stream<List<UserDto>> getAllUsers() {
     List<UserDto> users = [];
-
+    // await firebase.collection('users').doc("4234324325DS423dsdSAdsafewra46dSD464d6sawqe216S6").set(UserDto(
+    //         email: "Test@mail.ru",
+    //         firstName: 'Коля',
+    //         isOnline: false,
+    //         lastActive: DateTime(2022),
+    //         lastName: "Иванов",
+    //         password: "123456",
+    //         uid: "4234324325DS423dsdSAdsafewra46dSD464d6sawqe216S6")
+    // .toMap());
     try {
       return firebase
           .collection('users')
@@ -30,9 +37,5 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     } catch (e) {
       throw 'Error';
     }
-  }
-
-  Future<void> updateUserData(Map<String, dynamic> data) async {
-    await firebase.collection('users').doc(UserPref.getUserUid).update(data);
   }
 }

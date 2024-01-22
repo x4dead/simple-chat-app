@@ -7,6 +7,7 @@ import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 
 import 'package:simple_chat_app/utils/extentions/converting.dart';
+import 'package:simple_chat_app/utils/user_pref.dart';
 import 'package:simple_chat_app/widgets/custom_list_tile.dart';
 
 class ListUserWidget extends ConsumerWidget {
@@ -44,31 +45,44 @@ class ListUserWidget extends ConsumerWidget {
                             const EdgeInsets.fromLTRB(20, 10, 32, 10),
                         isLeadingTop: false,
                         horizontalTrailingGap: 0,
-                        leading: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              gradient: AppColors.colorOrangeGradien),
-                          child: Center(
-                            child: Text(
-                              Converting.getShortUserName(
-                                  data![index].firstName!,
-                                  data[index].lastName!),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: AppColors.colorWhite,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                        leading: Stack(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  gradient: AppColors.colorOrangeGradien),
+                              child: Center(
+                                child: Text(
+                                  Converting.getShortUserName(
+                                      data![index].firstName!,
+                                      data[index].lastName!),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: AppColors.colorWhite,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            if (data[index].isOnline == true)
+                              Positioned(
+                                bottom: 4,
+                                right: 0,
+                                child: Container(
+                                  height: 10,
+                                  width: 10,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: AppColors.colorGreenGradien),
+                                ),
+                              )
+                          ],
                         ),
-
                         trailing: Text(
                           Converting.getUpdateDate(
-                              // snapshot
-                              // .
                               data[index].lastActive!.toIso8601String()),
                           style: const TextStyle(
                             color: AppColors.colorDarkGray,
@@ -76,8 +90,6 @@ class ListUserWidget extends ConsumerWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        //TODO
-
                         title:
                             "${data[index].firstName} ${data[index].lastName}",
                         titleStyle: const TextStyle(
@@ -86,15 +98,18 @@ class ListUserWidget extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                         ),
                         subTitleWidget: RichText(
-                          text: const TextSpan(
-                            text: 'Вы: ',
+                          text: TextSpan(
+                            text: data[index].messageReceiverId ==
+                                    UserPref.getUserUid
+                                ? 'Вы: '
+                                : '',
                             children: [
                               TextSpan(
-                                  text: 'Я готов',
-                                  style:
-                                      TextStyle(color: AppColors.colorDarkGray))
+                                  text: data[index].lastMessage,
+                                  style: const TextStyle(
+                                      color: AppColors.colorDarkGray))
                             ],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.colorBlack),

@@ -11,6 +11,32 @@ class Converting {
     return '${firstName.characters.first}${lastName.characters.first} ';
   }
 
+  static String getUserLastActive(String updateDate) {
+    final updatedDate = DateTime.parse(updateDate);
+    final now = DateTime.now();
+    final today = now.day;
+    final yesterday = now.subtract(const Duration(days: 1)).day;
+    final buffer = StringBuffer();
+    final time =
+        ' ${updatedDate.hour < 10 ? "0${updatedDate.hour}" : updatedDate.hour}:${updatedDate.minute < 10 ? "0${updatedDate.minute}" : updatedDate.minute}';
+
+    if (updatedDate.day == today &&
+        updatedDate.month == now.month &&
+        updatedDate.year == now.year) {
+      buffer.write('сегодня в $time');
+    } else if (updatedDate.day == yesterday &&
+        updatedDate.month == now.month &&
+        updatedDate.year == now.year) {
+      buffer.write('вчера в $time');
+    } else {
+      final dateFormat = DateFormat(
+        'dd.MM.yy',
+      );
+      buffer.write("${dateFormat.format(updatedDate)} в $time");
+    }
+    return "был(-а) $buffer";
+  }
+
   static String getUpdateDate(String updateDate,
       {bool? isChatDateTime = false}) {
     final updatedDate = DateTime.parse(updateDate);
@@ -19,7 +45,7 @@ class Converting {
     final yesterday = now.subtract(const Duration(days: 1)).day;
     final buffer = StringBuffer();
     final dateDiff = now.difference(updatedDate);
-    final diff = updatedDate.difference(now).inDays.abs();
+
     if (updatedDate.day == today &&
         updatedDate.month == now.month &&
         updatedDate.year == now.year &&
