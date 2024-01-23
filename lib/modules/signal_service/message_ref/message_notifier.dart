@@ -26,7 +26,17 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
         .collection('chat')
         .doc(receiverId)
         .collection('messages')
-        .add(localMessage.toMap());
+        .doc()
+        .set(localMessage.toMap());
+
+    await _firebase
+        .collection('users')
+        .doc(receiverId)
+        .collection('chat')
+        .doc(UserPref.getUserUid)
+        .collection('messages')
+        .doc()
+        .set(localMessage.toMap());
   }
 
   Stream<List<MessageDto>> getMessages(String receiverId) {

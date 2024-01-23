@@ -8,7 +8,8 @@ class Converting {
   }
 
   static String getShortUserName(String firstName, String lastName) {
-    return '${firstName.characters.first}${lastName.characters.first} ';
+    return '${firstName.characters.first}${lastName.characters.first}'
+        .toUpperCase();
   }
 
   static String getUserLastActive(String updateDate) {

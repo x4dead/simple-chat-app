@@ -9,8 +9,6 @@ import 'package:simple_chat_app/pages/chat_list_page/widgets/list_users_widget.d
 import 'package:simple_chat_app/pages/create_chat_page/create_chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 
-
-
 class ChatListPage extends ConsumerStatefulWidget {
   const ChatListPage({super.key});
 
@@ -60,7 +58,6 @@ class _ChatPageState extends ConsumerState<ChatListPage>
                 CupertinoPageRoute(builder: (ctx) => const CreateChatPage()));
           },
           backgroundColor: AppColors.colorStroke,
-          elevation: 10,
           child: const Icon(
             CupertinoIcons.chat_bubble,
             color: AppColors.colorBlack,

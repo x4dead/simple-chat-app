@@ -57,14 +57,15 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
                 .doc(UserPref.getUserUid)
                 .collection('chat')
                 .doc(state.selectedChat?.uid)
-                . set(state.selectedChat!.toMap());
+                .set(state.selectedChat!.toMap());
           }
         } else {
           await _firebase
               .collection('users')
               .doc(UserPref.getUserUid)
               .collection('chat')
-              .add(state.selectedChat!.toMap());
+              .doc(state.selectedChat?.uid)
+              .set(state.selectedChat!.toMap());
         }
       });
     } catch (e) {

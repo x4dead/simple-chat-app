@@ -25,7 +25,7 @@ class ListUserWidget extends ConsumerWidget {
           // style: TextStyle(color: Colors.red),
           // )),
           StreamBuilder(
-              stream: ref.read(River.chatsPod.notifier).getAllChats(),
+              stream: ref.watch(River.chatsPod.notifier).getAllChats(),
               builder: (ctx, value) {
                 if (value.hasError) {
                   return const Center(
@@ -122,8 +122,9 @@ class ListUserWidget extends ConsumerWidget {
                             ),
                             subTitleWidget: RichText(
                               text: TextSpan(
-                                text: value.data![index].messageReceiverId ==
-                                        UserPref.getUserUid
+                                text: value.data![index].messageReceiverId !=
+                                            UserPref.getUserUid &&
+                                        value.data![index].lastMessage != null
                                     ? 'Вы: '
                                     : '',
                                 children: [
