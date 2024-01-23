@@ -52,7 +52,9 @@ class Converting {
         (dateDiff.inMinutes < 60 &&
             !dateDiff.inMinutes.isNegative &&
             isChatDateTime == false)) {
-      buffer.write('${dateDiff.inMinutes} минут назад');
+      buffer.write(dateDiff.inMinutes < 1
+          ? "только что"
+          : " ${dateDiff.inMinutes} минут назад");
     } else if (updatedDate.day == today &&
         updatedDate.month == now.month &&
         updatedDate.year == now.year &&

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_chat_app/models/src/user_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
@@ -19,13 +20,10 @@ class AuthPage extends ConsumerStatefulWidget {
   ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-// final isDark = ValueNotifier<bool>(false);
-// Locale? locale;
-
 class _AuthPageState extends ConsumerState<AuthPage> {
   BuildContext? loadingCtx;
   final _isObscure = StateProvider<bool>((ref) => false);
-
+  final _isConfirmPasswordObscure = StateProvider<bool>((ref) => false);
   final _isSignIn = StateProvider<bool>((ref) => true);
 
   ///sign up
@@ -71,7 +69,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         if (ref.watch(_isSignIn) == true) {
           ref.read(_isSignIn.notifier).state = false;
         } else {
-          ref.read(_isSignIn.notifier).state = false;
+          ref.read(_isSignIn.notifier).state = true;
         }
       }
     };
@@ -80,7 +78,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    materialProperty(value) => MaterialStatePropertyAll(value);
     return Scaffold(
       key: _scaffoldKey,
       body: Form(
@@ -92,35 +89,42 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
                   Text(
-                    'Привет!',
+                    ref.watch(_isSignIn) == true
+                        ? 'Привет!'
+                        : 'Зарегистрироваться',
                     style: textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 42,
+                        fontSize: ref.watch(_isSignIn) == true ? 42 : 32,
                         color: AppColors.colorBlack),
                   ),
                   Text(
-                    'Добро пожаловать',
+                    ref.watch(_isSignIn) == true
+                        ? 'Добро пожаловать'
+                        : 'Создать учетную запись',
                     style: textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
                         color: AppColors.colorBlack),
                   ),
-                  const SizedBox(height: 25),
+                  kSBH25,
                   AppTextField(
                       inputFormatters: FieldFormClass.regExpEmail,
-                      controller: loginEmailController,
-                      icon: Icons.mail_outline_rounded,
+                      controller: ref.watch(_isSignIn) == true
+                          ? loginEmailController
+                          : signUpEmailController,
+                      icon: CupertinoIcons.mail,
                       maxLength: 36,
                       text: 'Почта',
                       validator: (email) =>
                           FieldFormClass.validatorEmail(email)),
-                  const SizedBox(height: 10),
+                  kSBH5,
                   AppTextField(
                     inputFormatters: FieldFormClass.regExpPassword,
-                    controller: loginPasswordController,
-                    icon: Icons.lock_outline_rounded,
+                    controller: ref.watch(_isSignIn) == true
+                        ? loginPasswordController
+                        : signUpPasswordController,
+                    icon: CupertinoIcons.lock,
                     obscureText: ref.watch(_isObscure),
                     maxLength: 32,
                     text: 'Пароль',
@@ -131,12 +135,64 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       onPressed: toggleScreenOrButton(isButton: true),
                       icon: Icon(
                         ref.watch(_isObscure) == true
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        color: AppColors.colorBlack,
+                            ? CupertinoIcons.eye_fill
+                            : CupertinoIcons.eye_slash_fill,
+                        color: AppColors.colorBlack.withOpacity(0.9),
                       ),
                     ),
                   ),
+                  if (ref.watch(_isSignIn) == false) ...[
+                    kSBH5,
+                    AppTextField(
+                      inputFormatters: FieldFormClass.regExpPassword,
+                      controller: ref.watch(_isSignIn) == true
+                          ? loginPasswordController
+                          : signUpConfirmPasswordController,
+                      icon: CupertinoIcons.lock,
+                      obscureText: ref.watch(_isConfirmPasswordObscure),
+                      maxLength: 32,
+                      text: 'Подтвердить пароль',
+                      validator: (password) =>
+                          FieldFormClass.validatorNewPasswords(
+                              password ?? '', signUpPasswordController.text),
+                      suffix: IconButton(
+                        splashRadius: 15,
+                        onPressed: () {
+                          if (ref.watch(_isConfirmPasswordObscure) == true) {
+                            ref.read(_isConfirmPasswordObscure.notifier).state =
+                                false;
+                          } else {
+                            ref.read(_isConfirmPasswordObscure.notifier).state =
+                                true;
+                          }
+                        },
+                        icon: Icon(
+                          ref.watch(_isConfirmPasswordObscure) == true
+                              ? CupertinoIcons.eye_fill
+                              : CupertinoIcons.eye_slash_fill,
+                          color: AppColors.colorBlack.withOpacity(0.9),
+                        ),
+                      ),
+                    ),
+                    kSBH5,
+                    AppTextField(
+                      text: 'Имя',
+                      maxLength: 36,
+                      icon: CupertinoIcons.person,
+                      inputFormatters: FieldFormClass.regExpName,
+                      validator: (name) => FieldFormClass.validatorName(name),
+                      controller: firstNameController,
+                    ),
+                    kSBH5,
+                    AppTextField(
+                      text: 'Фамилия',
+                      maxLength: 36,
+                      icon: CupertinoIcons.person,
+                      inputFormatters: FieldFormClass.regExpName,
+                      validator: (name) => FieldFormClass.validatorName(name),
+                      controller: lastNameController,
+                    ),
+                  ],
                   kSBH20,
                   ElevatedButton(
                     style: ButtonStyle(
@@ -147,12 +203,26 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         overlayColor: MaterialStatePropertyAll(
                             AppColors.colorBlack.withOpacity(0.08))),
                     onPressed: () async {
-                      if (FieldFormClass.validatorEmail(
-                                  loginEmailController.text) ==
-                              null &&
-                          FieldFormClass.validatorPassword(
-                                  loginPasswordController.text) ==
-                              null) {
+                      if (ref.watch(_isSignIn) == true
+                          ? (FieldFormClass.validatorEmail(loginEmailController.text) ==
+                                  null &&
+                              FieldFormClass.validatorPassword(
+                                      loginPasswordController.text) ==
+                                  null)
+                          : (FieldFormClass.validatorEmail(
+                                          signUpEmailController.text) ==
+                                      null &&
+                                  FieldFormClass.validatorPassword(
+                                          signUpPasswordController.text) ==
+                                      null) &&
+                              FieldFormClass.validatorNewPasswords(
+                                      signUpConfirmPasswordController.text,
+                                      signUpPasswordController.text) ==
+                                  null &&
+                              FieldFormClass.validatorName(firstNameController.text) ==
+                                  null &&
+                              FieldFormClass.validatorName(lastNameController.text) ==
+                                  null) {
                         try {
                           showCupertinoDialog(
                             context: context,
@@ -162,14 +232,22 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             },
                           );
                           await Future.delayed(const Duration(seconds: 2));
-                          await ref
-                              .read(River.authPod.notifier)
-                              .login(
-                                  email: loginEmailController.text,
-                                  password: loginPasswordController.text)
-                              .then((value) {
-                            context.go('/chat');
-                          });
+                          if (ref.watch(_isSignIn) == true) {
+                            await ref.read(River.authPod.notifier).login(
+                                email: loginEmailController.text,
+                                password: loginPasswordController.text);
+                          } else {
+                            await ref.read(River.authPod.notifier).signUp(
+                                user: UserDto(
+                                    firstName: firstNameController.text,
+                                    lastActive: DateTime.now(),
+                                    lastName: lastNameController.text,
+                                    email: signUpEmailController.text,
+                                    password: signUpPasswordController.text));
+                          }
+                          if (mounted) {
+                            context.go('/chat_list');
+                          }
 
                           if (loadingCtx != null) {
                             Navigator.of(loadingCtx!).pop();
@@ -182,16 +260,19 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             showDialog(
                                 context: context,
                                 builder: (ctx) => CupertinoAlertDialog(
-                                      title: Text(e.toString()),
+                                      title: const Text("Error"),
+                                      content: Text(e.toString()),
                                     ));
                           }
                         }
                       }
                     },
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'Войти',
-                        style: TextStyle(
+                        ref.watch(_isSignIn) == true
+                            ? 'Войти'
+                            : "Зарегистрироваться",
+                        style: const TextStyle(
                             fontSize: 20,
                             color: AppColors.colorBlack,
                             fontWeight: FontWeight.bold),
@@ -201,7 +282,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   kSBH20,
                   RichText(
                     text: TextSpan(
-                      text: "Не зарегистрированы? ",
+                      text: ref.watch(_isSignIn) == true
+                          ? "Не зарегистрированы? "
+                          : 'У вас уже есть аккаунт? ',
                       style: const TextStyle(
                           fontSize: 15,
                           color: AppColors.colorBlack,
@@ -213,8 +296,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             overlayColor: MaterialStatePropertyAll(
                                 AppColors.colorBlack.withOpacity(0.07)),
                             onTap: toggleScreenOrButton(),
-                            child: const Text("Зарегистрироваться",
-                                style: TextStyle(
+                            child: Text(
+                                ref.watch(_isSignIn) == true
+                                    ? "Зарегистрироваться"
+                                    : 'Войти',
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.colorDarkGray)),
                           ),

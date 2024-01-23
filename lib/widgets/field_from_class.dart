@@ -4,15 +4,12 @@
   static RegExp regExpPassword =
       RegExp(r'^[A-Za-z0-9!@#\$&*~]+', unicode: true);
   static RegExp regExpEmail = RegExp(r'^[a-z0-9@._-]+');
-  static RegExp regExpName = RegExp(r'^[A-Za-z]+', unicode: true);
+  static RegExp regExpName = RegExp(r'^[A-Za-zА-Яа-я]+', unicode: true);
 
-  static String? validatorName(String? name) {
+  static String? validatorName(String? name, {bool? lastName = false}) {
     if (name!.length <= 1) {
-      //если длинна имени меньше 3 символов выводиим ошибку
-      return 'name_3_characters';
-    } else if (!name.contains(RegExp(r'[A-Z]'))) {
-      //если пароль не содержит хотя бы одну заглавную буквку выводим ошибку
-      return 'name_uppercase';
+      //если длинна имени меньше 2 символов выводиим ошибку
+      return 'Имя должно содержать не менее 2 символов';
     } else {
       return null;
     }
@@ -47,17 +44,17 @@
     }
   }
 
-  static String? validatorOldNewPassword(
-      String passwordOld, String passwordNew) {
-    if (passwordNew == passwordOld) {
-      return "password_is_same";
-    }
-    return null;
-  }
+  // static String? validatorOldNewPassword(
+  //     String passwordOld, String passwordNew) {
+  //   if (passwordNew == passwordOld) {
+  //     return "password_is_same";
+  //   }
+  //   return null;
+  // }
 
   static String? validatorNewPasswords(String password1, String password2) {
     if (password1 != password2 || password1.isEmpty) {
-      return "password_match";
+      return "Пароли не совпадают. Попробуй еще раз.";
     }
     return null;
   }

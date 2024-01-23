@@ -2,6 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:simple_chat_app/models/models.dart';
+import 'package:simple_chat_app/models/src/chat_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
@@ -14,7 +15,7 @@ class ChatHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    UserDto user = ref.watch(River.usersPod).mainUser!;
+    ChatDto user = ref.watch(River.chatsPod).selectedChat??ChatDto();
     return CustomListTile(
       height: 100,
       contentPadding: const EdgeInsets.fromLTRB(20, 38, 32, 12),
@@ -69,7 +70,9 @@ class ChatHeader extends ConsumerWidget {
       ),
       subTitle: user.isOnline == true
           ? 'В сети'
-          : Converting.getUserLastActive(user.lastActive!.toIso8601String()),
+          : user.lastActive != null
+              ? Converting.getUserLastActive(user.lastActive!.toIso8601String())
+              : '',
       subTitleStyle: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,

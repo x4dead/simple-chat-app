@@ -7,6 +7,7 @@ import 'package:simple_chat_app/pages/chat_page/widgets/messages_list_widget.dar
 import 'package:simple_chat_app/utils/user_pref.dart';
 
 class MessageNotifier extends StateNotifier<MessageStateRef> {
+  final _firebase = FirebaseFirestore.instance;
   MessageNotifier() : super(const MessageStateRef());
   Future sendMessage(
       {required String content, required String receiverId}) async {
@@ -16,7 +17,10 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       senderId: UserPref.getUserUid,
       sentTime: DateTime.now(),
     );
-    await FirebaseFirestore.instance
+    // if(){
+
+    // }
+    await _firebase
         .collection('users')
         .doc(UserPref.getUserUid)
         .collection('chat')
@@ -28,7 +32,7 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
   Stream<List<MessageDto>> getMessages(String receiverId) {
     List<MessageDto> messages = [];
 
-    return FirebaseFirestore.instance
+    return _firebase
         .collection('users')
         .doc(UserPref.getUserUid)
         .collection('chat')

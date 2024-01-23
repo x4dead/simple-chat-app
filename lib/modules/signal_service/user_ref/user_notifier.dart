@@ -6,24 +6,22 @@ import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.d
 import 'package:simple_chat_app/utils/user_pref.dart';
 
 class UserNotifier extends StateNotifier<UserStateRef> {
-  final firebase = FirebaseFirestore.instance;
+  final _firebase = FirebaseFirestore.instance;
 
   UserNotifier() : super(const UserStateRef());
-  void setMainUser(UserDto user) {
-    state = state.copyWith(mainUser: user);
-  }
 
   Stream<List<UserDto>> getAllUsers() {
     List<UserDto> users = [];
 
     try {
-      return firebase
+      return _firebase
           .collection('users')
           .orderBy('last_active', descending: true)
           .snapshots(includeMetadataChanges: true)
           .map((snapshot) {
         users =
             snapshot.docs.map((doc) => UserDto.fromMap(doc.data())).toList();
+        users.removeWhere((e) => e.uid == UserPref.getUserUid);
         state = state.copyWith(users: users);
         return users;
       });
@@ -33,6 +31,11 @@ class UserNotifier extends StateNotifier<UserStateRef> {
   }
 
   Future<void> updateUserData(Map<String, dynamic> data) async {
-    await firebase.collection('users').doc(UserPref.getUserUid).update(data);
+    try {
+       await _firebase.collection('users').doc(UserPref.getUserUid).update(data);
+    } catch (e) {
+      throw Exception();
+    }
+   
   }
 }

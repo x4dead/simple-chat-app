@@ -9,13 +9,13 @@ import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
 
-final messagesProvider = StreamProvider<List<MessageDto>>((
-  ref,
-) {
-  return ref
-      .read(River.messagesPod.notifier)
-      .getMessages(ref.watch(River.usersPod).mainUser!.uid!);
-});
+// final messagesProvider = StreamProvider<List<MessageDto>>((
+//   ref,
+// ) {
+//   return ref
+//       .read(River.messagesPod.notifier)
+//       .getMessages(ref.watch(River.usersPod).selectedChat!.uid!);
+// });
 ScrollController scrollController = ScrollController();
 
 class MessagesListWidget extends ConsumerStatefulWidget {
@@ -30,18 +30,37 @@ class _MessageListWidgetState extends ConsumerState<MessagesListWidget> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: ref.watch(messagesProvider).when(
-            // data: (data) {},
-            error: (error, s) => const Center(
+        child: StreamBuilder(
+            stream: ref
+                .read(River.messagesPod.notifier)
+                .getMessages(ref.watch(River.chatsPod).selectedChat!.uid!),
+            builder:
+                //  builder)
+                // ref.watch(messagesProvider).when(
+
+                (cts, snap) {
+              // if (snap.connectionState == ConnectionState.waiting) {
+              //   return const Center(
+              //     child: CupertinoActivityIndicator(),
+              //   );
+              // } else
+              if (snap.hasError) {
+                return const Center(
                     child: Text(
                   'Error',
                   style: TextStyle(color: Colors.red),
-                )),
-            loading: () => const Center(
-                  child: CupertinoActivityIndicator(),
-                ),
-            data: (data) {
-              if (data.isEmpty) {
+                ));
+              }
+              // error: (error, s) => const Center(
+              //         child: Text(
+              //       'Error',
+              //       style: TextStyle(color: Colors.red),
+              //     )),
+              // loading: () => const Center(
+              //       child: CupertinoActivityIndicator(),
+              //     ),
+              // data: (data) {
+              if (snap.data?.isEmpty ?? true) {
                 return const Center(
                   child: Text(
                     'Чат пуст',
@@ -51,17 +70,18 @@ class _MessageListWidgetState extends ConsumerState<MessagesListWidget> {
               } else {
                 return CustomScrollView(controller: scrollController, slivers: [
                   SliverList.builder(
-                      itemCount: data.length,
+                      itemCount: snap.data!.length,
                       itemBuilder: (ctx, index) {
                         bool isSameDate = true;
-                        final item = data[index];
+                        final item = snap.data![index];
 
                         final DateTime date = item.sentTime!;
 
                         if (index == 0) {
                           isSameDate = false;
                         } else {
-                          final DateTime prevDate = data[index - 1].sentTime!;
+                          final DateTime prevDate =
+                              snap.data![index - 1].sentTime!;
                           isSameDate = date.day == prevDate.day;
                         }
                         if (index == 0 || !(isSameDate)) {
