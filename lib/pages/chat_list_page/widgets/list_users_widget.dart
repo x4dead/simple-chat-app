@@ -10,10 +10,10 @@ class ListUserWidget extends ConsumerWidget {
           stream: ref.watch(River.chatsPod.notifier).getAllChats(),
           builder: (ctx, value) {
             if (value.hasError) {
-              return const Center(
+              return Center(
                   child: Text(
-                'Error',
-                style: TextStyle(color: Colors.red),
+                value.error.toString(),
+                style: const TextStyle(color: Colors.red),
               ));
             }
             if (value.data?.isEmpty ?? true) {
@@ -30,105 +30,108 @@ class ListUserWidget extends ConsumerWidget {
                 SliverList.builder(
                   itemCount: value.data?.length,
                   itemBuilder: (context, index) {
-                    return IntrinsicHeight(
-                      child: CustomListTile(
-                        onTap: () {
-                          ref
-                              .read(River.chatsPod.notifier)
-                              .setSelectedChat(value.data![index]);
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const ChatPage()));
-                        },
-                        horizontalTitleGap: 12,
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20, 10, 32, 10),
-                        isLeadingTop: false,
-                        horizontalTrailingGap: 0,
-                        leading: Stack(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: AppColors.colorOrangeGradien),
-                              child: Center(
-                                child: Text(
-                                  Converting.getShortUserName(
-                                      value.data![index].firstName!,
-                                      value.data![index].lastName!),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: AppColors.colorWhite,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                    return CustomListTile(
+                      height: 70,
+                      onTap: () {
+                        ref
+                            .read(River.chatsPod.notifier)
+                            .setSelectedChat(value.data![index]);
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const ChatPage()));
+                      },
+                      horizontalTitleGap: 12,
+                      contentPadding: const EdgeInsets.fromLTRB(20, 10, 32, 10),
+                      isLeadingTop: false,
+                      horizontalTrailingGap: 0,
+                      leading: Stack(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                gradient: AppColors.colorOrangeGradien),
+                            child: Center(
+                              child: Text(
+                                Converting.getShortUserName(
+                                    value.data![index].firstName!,
+                                    value.data![index].lastName!),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: AppColors.colorWhite,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
-                            StreamBuilder(
-                              stream: ref
-                                  .watch(River.usersPod.notifier)
-                                  .getOnlineStatus(value.data![index]),
-                              builder: (context, snapshot) {
-                                if (snapshot.data == true) {
-                                  return Positioned(
-                                    bottom: 4,
-                                    right: 0,
-                                    child: Container(
-                                      height: 10,
-                                      width: 10,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient:
-                                              AppColors.colorGreenGradien),
-                                    ),
-                                  );
-                                } else {
-                                  return kNothing;
-                                }
-                              },
-                            ),
+                          ),
+                          StreamBuilder(
+                            stream: ref
+                                .watch(River.usersPod.notifier)
+                                .getOnlineStatus(value.data![index]),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == true) {
+                                return Positioned(
+                                  bottom: 4,
+                                  right: 0,
+                                  child: Container(
+                                    height: 10,
+                                    width: 10,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: AppColors.colorGreenGradien),
+                                  ),
+                                );
+                              } else {
+                                return kNothing;
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      trailing: Text(
+                        Converting.getUpdateDate(value
+                                .data![index].lastMessageDate
+                                ?.toIso8601String() ??
+                            value.data![index].lastActive!.toIso8601String()),
+                        style: const TextStyle(
+                          color: AppColors.colorDarkGray,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      titleMaxLines: 1,
+                      title:
+                          "${value.data![index].firstName} ${value.data![index].lastName}",
+                      titleStyle: TextStyle(
+                        fontSize: 15,
+                        color: AppColors.color000000,
+                        fontWeight: FontWeight.bold,
+                        height: 18.0.toFigmaHeight(15),
+                      ),
+                      subTitleWidget: RichText(
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                          text: value.data![index].messageReceiverId !=
+                                      UserPref.getUserUid &&
+                                  value.data![index].lastMessage != null
+                              ? 'Вы: '
+                              : '',
+                          children: [
+                            TextSpan(
+                                text: value.data![index].lastMessage,
+                                style: TextStyle(
+                                    color: AppColors.colorDarkGray,
+                                    height: 14.56.toFigmaHeight(12)))
                           ],
-                        ),
-                        trailing: Text(
-                          Converting.getUpdateDate(value
-                                  .data![index].lastMessageDate
-                                  ?.toIso8601String() ??
-                              value.data![index].lastActive!.toIso8601String()),
-                          style: const TextStyle(
-                            color: AppColors.colorDarkGray,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        title:
-                            "${value.data![index].firstName} ${value.data![index].lastName}",
-                        titleStyle: const TextStyle(
-                          fontSize: 15,
-                          color: AppColors.color000000,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        subTitleWidget: RichText(
-                          text: TextSpan(
-                            text: value.data![index].messageReceiverId !=
-                                        UserPref.getUserUid &&
-                                    value.data![index].lastMessage != null
-                                ? 'Вы: '
-                                : '',
-                            children: [
-                              TextSpan(
-                                  text: value.data![index].lastMessage,
-                                  style: const TextStyle(
-                                      color: AppColors.colorDarkGray))
-                            ],
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.colorBlack),
-                          ),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.colorBlack,
+                              height: 15.0.toFigmaHeight(12)),
                         ),
                       ),
                     );

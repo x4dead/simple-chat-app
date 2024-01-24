@@ -32,6 +32,7 @@ class CustomListTile extends StatelessWidget {
     this.clipBehavior = Clip.none,
     this.bottomOverlineGap = 0,
     this.subTitleWidget,
+    this.titleMaxLines,
   });
   final EdgeInsetsGeometry? contentPadding;
 
@@ -61,6 +62,7 @@ class CustomListTile extends StatelessWidget {
   final double? leadingHeight;
   final double? leadingWidth;
   final int? subTitleMaxLines;
+  final int? titleMaxLines;
   final BorderRadiusGeometry? borderRadius;
   final Function()? onTap;
   final double? radius;
@@ -112,6 +114,7 @@ class CustomListTile extends StatelessWidget {
                       children: [
                         Text(
                           title,
+                          maxLines: titleMaxLines,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: titleStyle ?? const TextStyle(fontSize: 16),
@@ -121,7 +124,7 @@ class CustomListTile extends StatelessWidget {
                           Text(
                             subTitle!,
                             overflow: TextOverflow.ellipsis,
-                            style: subTitleStyle ?? TextStyle(),
+                            style: subTitleStyle ?? const TextStyle(),
                             maxLines: subTitleMaxLines,
                           ),
                         if (subTitleWidget != null && subTitle == null)

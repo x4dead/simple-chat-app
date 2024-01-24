@@ -29,8 +29,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
         state = state.copyWith(chats: chats);
         return chats;
       });
-    } catch (e) {
-      throw 'Error';
+    } on FirebaseException catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -62,8 +62,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
               receiverChat ?? state.selectedChat!);
         }
       });
-    } catch (e) {
-      throw Exception();
+    } on FirebaseException catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -87,8 +87,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
           .collection('chat')
           .doc(updatedChatUid)
           .update(data);
-    } catch (e) {
-      throw Exception();
+    } on FirebaseException catch (e) {
+      throw Exception(e);
     }
   }
 }
