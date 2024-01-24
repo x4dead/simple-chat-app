@@ -1,8 +1,6 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/models/models.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/pages/chat_list_page/widgets/chat_list_header.dart';
 import 'package:simple_chat_app/pages/chat_list_page/widgets/list_users_widget.dart';
@@ -28,16 +26,19 @@ class _ChatPageState extends ConsumerState<ChatListPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     switch (state) {
+      case AppLifecycleState.inactive:
       case AppLifecycleState.resumed:
         ref.read(River.usersPod.notifier).updateUserData({
           "last_active": DateTime.now().toIso8601String(),
           "is_online": true,
         });
+
         break;
-      case AppLifecycleState.inactive:
+
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
         ref.read(River.usersPod.notifier).updateUserData({"is_online": false});
+
         break;
       default:
     }
@@ -45,8 +46,8 @@ class _ChatPageState extends ConsumerState<ChatListPage>
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

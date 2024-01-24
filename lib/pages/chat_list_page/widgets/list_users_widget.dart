@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/pages/chat_list_page/chat_list_page.dart';
+
 import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
+import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
@@ -86,19 +87,29 @@ class ListUserWidget extends ConsumerWidget {
                                     ),
                                   ),
                                 ),
-                                if (value.data![index].isOnline == true)
-                                  Positioned(
-                                    bottom: 4,
-                                    right: 0,
-                                    child: Container(
-                                      height: 10,
-                                      width: 10,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient:
-                                              AppColors.colorGreenGradien),
-                                    ),
-                                  )
+                                StreamBuilder(
+                                  stream: ref
+                                      .watch(River.usersPod.notifier)
+                                      .getOnlineStatus(value.data![index]),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data == true) {
+                                      return Positioned(
+                                        bottom: 4,
+                                        right: 0,
+                                        child: Container(
+                                          height: 10,
+                                          width: 10,
+                                          decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              gradient:
+                                                  AppColors.colorGreenGradien),
+                                        ),
+                                      );
+                                    } else {
+                                      return kNothing;
+                                    }
+                                  },
+                                ),
                               ],
                             ),
                             trailing: Text(
