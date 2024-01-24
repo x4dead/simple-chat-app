@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/models/models.dart';
 import 'package:simple_chat_app/models/src/chat_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/chat_ref/chat_state_ref.dart';
 
-import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
 
 class ChatNotifier extends StateNotifier<ChatStateRef> {
@@ -36,13 +34,16 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     }
   }
 
-  Future createChat() async {
+  Future createChat({
+    String? mainUserId,
+    ChatDto? receiverChat,
+  }) async {
     try {
       List<String> chats = [];
 
       await _firebase
           .collection("users")
-          .doc(UserPref.getUserUid)
+          .doc(mainUserId ?? UserPref.getUserUid)
           .collection('chat')
           .get()
           .then((event) async {
@@ -51,21 +52,14 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
             chats.add(ChatDto.fromMap(doc.data()).uid!);
           }
 
-          if (chats.contains(state.selectedChat?.uid) == false) {
-            await _firebase
-                .collection('users')
-                .doc(UserPref.getUserUid)
-                .collection('chat')
-                .doc(state.selectedChat?.uid)
-                .set(state.selectedChat!.toMap());
+          if (chats.contains(receiverChat?.uid ?? state.selectedChat?.uid) ==
+              false) {
+            await _createChatWithSelectedChat(mainUserId ?? UserPref.getUserUid,
+                receiverChat ?? state.selectedChat!);
           }
         } else {
-          await _firebase
-              .collection('users')
-              .doc(UserPref.getUserUid)
-              .collection('chat')
-              .doc(state.selectedChat?.uid)
-              .set(state.selectedChat!.toMap());
+          await _createChatWithSelectedChat(mainUserId ?? UserPref.getUserUid,
+              receiverChat ?? state.selectedChat!);
         }
       });
     } catch (e) {
@@ -73,14 +67,25 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     }
   }
 
+  Future _createChatWithSelectedChat(
+    String mainUserId,
+    ChatDto receiverChat,
+  ) async =>
+      await _firebase
+          .collection('users')
+          .doc(mainUserId)
+          .collection('chat')
+          .doc(receiverChat.uid)
+          .set(receiverChat.toMap());
+
   Future<void> updateChatData(Map<String, dynamic> data,
-      {required String uid}) async {
+      {required String updatedChatUid, String? mainUid}) async {
     try {
       await _firebase
           .collection('users')
-          .doc(UserPref.getUserUid)
+          .doc(mainUid ?? UserPref.getUserUid)
           .collection('chat')
-          .doc(uid)
+          .doc(updatedChatUid)
           .update(data);
     } catch (e) {
       throw Exception();

@@ -8,6 +8,7 @@ import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 import 'package:simple_chat_app/utils/resources/app_images.dart';
+import 'package:simple_chat_app/widgets/app_text_field.dart';
 
 class ChatListHeader extends ConsumerStatefulWidget {
   const ChatListHeader({
@@ -83,36 +84,23 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
             ],
           ),
           kSBH6,
-          TextField(
+          AppTextField(
+            hintText: 'Поиск',
+            isDense: true,
             controller: textController,
             onChanged: widget.onChanged,
-            onSubmitted: widget.onSubmitted,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              height: 19.0.toFigmaHeight(16.0),
-            ),
-            cursorColor: AppColors.colorDarkGray,
-            decoration: InputDecoration(
-              isDense: true,
-              fillColor: AppColors.colorStroke,
-              filled: true,
-              prefixIconConstraints:
-                  const BoxConstraints(maxHeight: 24, maxWidth: 38),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 8, right: 6),
-                child: SvgPicture.asset(AppImages.search),
-              ),
-              hintText: 'Поиск',
-              border: InputBorder.none,
-              hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  height: 19.0.toFigmaHeight(16.0),
-                  color: AppColors.colorGray),
-              constraints: const BoxConstraints(maxHeight: 42),
+            onFieldSubmitted: widget.onSubmitted,
+            constraints: const BoxConstraints(maxHeight: 42),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 11.5, horizontal:8),
+            prefixConstraints:
+                const BoxConstraints(maxHeight: 24, maxWidth: 38),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 8, right: 6),
+              child: SvgPicture.asset(AppImages.search),
             ),
           ),
+        
         ],
       ),
     );

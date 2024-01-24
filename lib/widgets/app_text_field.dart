@@ -1,74 +1,111 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
+import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 // import '../../../../themes/colors/colors.dart';
 // import '../../../../themes/text_style/text_style.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   const AppTextField({
     Key? key,
-    required this.text,
-    this.maxLength = 16,
+    required this.hintText,
+    this.maxLength,
     this.suffix,
     this.obscureText,
-    this.icon,
+    this.prefixIcon,
     this.controller,
     this.validator,
     this.inputFormatters,
+    this.hintStyle,
+    this.contentPadding,
+    this.style,
+    this.onFieldSubmitted,
+    this.onChanged,
+    this.isDense,
+    this.constraints,
+    this.prefixConstraints,
   }) : super(key: key);
-  final String text;
+  final String hintText;
   final int? maxLength;
   final Widget? suffix;
   final bool? obscureText;
-  final IconData? icon;
+  final Widget? prefixIcon;
+  final TextStyle? hintStyle;
+  final TextStyle? style;
+
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final RegExp? inputFormatters;
+  final EdgeInsetsGeometry? contentPadding;
+  final Function(String)? onFieldSubmitted;
+  final Function(String)? onChanged;
+  final bool? isDense;
+  final BoxConstraints? constraints;
+  final BoxConstraints? prefixConstraints;
+  @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  late List<TextInputFormatter> inputFormatters;
+  @override
+  void initState() {
+    super.initState();
+
+    inputFormatters = widget.inputFormatters == null
+        ? <TextInputFormatter>[]
+        : [FilteringTextInputFormatter.allow(widget.inputFormatters!)];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 0, color: AppColors.colorStroke),
+        gapPadding: 6);
     return TextFormField(
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(inputFormatters ?? ''),
-      ],
-      obscureText: obscureText ?? false,
-      maxLength: maxLength,
-      controller: controller,
-      validator: validator,
-      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          // color: AppColors.color000000.withOpacity(0.85)
-          ),
-      decoration: InputDecoration(
-        // contentPadding: EdgeInsets.zero,
-        counterText: '',
-        hintText: text,
-        hintStyle: const TextStyle(
+      onFieldSubmitted: widget.onFieldSubmitted,
+      onChanged: widget.onChanged,
+      inputFormatters: inputFormatters,
+      obscureText: widget.obscureText ?? false,
+      maxLength: widget.maxLength,
+      controller: widget.controller,
+      validator: widget.validator,
+      style: widget.style ??
+          TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: AppColors.colorGray),
+            height: 19.0.toFigmaHeight(16.0),
+          ),
+      decoration: InputDecoration(
+        constraints: widget.constraints,
+        prefixIconConstraints: widget.prefixConstraints,
+        isDense: widget.isDense,
+        contentPadding: widget.contentPadding ??
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        counterText: '',
+        hintText: widget.hintText,
+        hintStyle: widget.hintStyle ??
+            const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: AppColors.colorGray),
         filled: true,
         fillColor: AppColors.colorStroke,
-        suffixIcon: suffix,
-        prefixIcon: Icon(
-          icon,
-          color: AppColors.colorGray,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
+        suffixIcon: widget.suffix,
+        prefixIcon: widget.prefixIcon,
+        // Icon(
+        // widget.icon,
+        // color: AppColors.colorGray,
+        // ),
+
+        enabledBorder: border,
+        border: border,
+        focusedBorder: border,
         errorStyle: TextStyle(
             color: Theme.of(context).colorScheme.error.withOpacity(0.8)),
-        errorBorder: UnderlineInputBorder(
-          // borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error.withOpacity(0.5)),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
-          // borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error.withOpacity(0.5)),
-        ),
+        errorBorder: border,
+        focusedErrorBorder: border,
       ),
     );
   }

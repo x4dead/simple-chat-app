@@ -114,9 +114,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         controller: ref.watch(_isSignIn) == true
                             ? loginEmailController
                             : signUpEmailController,
-                        icon: CupertinoIcons.mail,
+                        prefixIcon: const Icon(
+                          CupertinoIcons.mail,
+                          color: AppColors.colorGray,
+                        ),
                         maxLength: 36,
-                        text: 'Почта',
+                        hintText: 'Почта',
                         validator: (email) =>
                             FieldFormClass.validatorEmail(email)),
                     kSBH5,
@@ -125,10 +128,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       controller: ref.watch(_isSignIn) == true
                           ? loginPasswordController
                           : signUpPasswordController,
-                      icon: CupertinoIcons.lock,
+                      prefixIcon: const Icon(
+                        CupertinoIcons.lock,
+                        color: AppColors.colorGray,
+                      ),
                       obscureText: ref.watch(_isObscure),
                       maxLength: 32,
-                      text: 'Пароль',
+                      hintText: 'Пароль',
                       validator: (password) =>
                           FieldFormClass.validatorPassword(password),
                       suffix: IconButton(
@@ -149,10 +155,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         controller: ref.watch(_isSignIn) == true
                             ? loginPasswordController
                             : signUpConfirmPasswordController,
-                        icon: CupertinoIcons.lock,
+                        prefixIcon: const Icon(
+                          CupertinoIcons.lock,
+                          color: AppColors.colorGray,
+                        ),
                         obscureText: ref.watch(_isConfirmPasswordObscure),
                         maxLength: 32,
-                        text: 'Подтвердить пароль',
+                        hintText: 'Подтвердить пароль',
                         validator: (password) =>
                             FieldFormClass.validatorNewPasswords(
                                 password ?? '', signUpPasswordController.text),
@@ -179,18 +188,24 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       ),
                       kSBH5,
                       AppTextField(
-                        text: 'Имя',
+                        hintText: 'Имя',
                         maxLength: 36,
-                        icon: CupertinoIcons.person,
+                        prefixIcon: const Icon(
+                          CupertinoIcons.person,
+                          color: AppColors.colorGray,
+                        ),
                         inputFormatters: FieldFormClass.regExpName,
                         validator: (name) => FieldFormClass.validatorName(name),
                         controller: firstNameController,
                       ),
                       kSBH5,
                       AppTextField(
-                        text: 'Фамилия',
+                        hintText: 'Фамилия',
                         maxLength: 36,
-                        icon: CupertinoIcons.person,
+                        prefixIcon: const Icon(
+                          CupertinoIcons.person,
+                          color: AppColors.colorGray,
+                        ),
                         inputFormatters: FieldFormClass.regExpName,
                         validator: (name) => FieldFormClass.validatorName(name),
                         controller: lastNameController,

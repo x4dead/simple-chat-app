@@ -27,7 +27,6 @@ class ChatDto {
     String? lastName,
     bool? isOnline,
     DateTime? lastActive,
-
     String? lastMessage,
     DateTime? lastMessageDate,
     String? messageReceiverId,
@@ -38,7 +37,6 @@ class ChatDto {
         lastName: lastName ?? this.lastName,
         isOnline: isOnline ?? this.isOnline,
         lastActive: lastActive ?? this.lastActive,
-        
         lastMessage: lastMessage ?? this.lastMessage,
         lastMessageDate: lastMessageDate ?? this.lastMessageDate,
         messageReceiverId: messageReceiverId ?? this.messageReceiverId,
@@ -52,11 +50,10 @@ class ChatDto {
         uid: json["uid"],
         firstName: json["first_name"],
         lastName: json["last_name"],
-        isOnline: json[" is_online"],
+        isOnline: json["is_online"] ?? false,
         lastActive: json["last_active"] == null
             ? null
             : DateTime.parse(json["last_active"]),
-
         lastMessage: json["last_message"],
         lastMessageDate: json["last_message_date"] == null
             ? null
@@ -73,7 +70,8 @@ class ChatDto {
         "last_message": lastMessage,
         "last_message_date": lastMessageDate?.toIso8601String(),
         "message_receiver_id": messageReceiverId,
-      };Map<String, dynamic> toMapWithOutUid() => {
+      };
+  Map<String, dynamic> toMapWithOutUid() => {
         // "uid": uid,
         "first_name": firstName,
         "last_name": lastName,

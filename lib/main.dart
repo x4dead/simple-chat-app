@@ -30,6 +30,7 @@ class MainApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'Gilroy',
           textSelectionTheme: TextSelectionThemeData(
+              cursorColor: AppColors.colorDarkGray,
               selectionColor: AppColors.colorGray.withOpacity(0.5),
               selectionHandleColor: AppColors.colorDarkGray)),
       debugShowCheckedModeBanner: false,

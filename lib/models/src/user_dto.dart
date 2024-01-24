@@ -58,7 +58,7 @@ class UserDto {
         uid: json["uid"],
         firstName: json["first_name"],
         lastName: json["last_name"],
-        isOnline: json[" is_online"],
+        isOnline: json["is_online"] ?? false,
         lastActive: json["last_active"] == null
             ? null
             : DateTime.parse(json["last_active"]),
