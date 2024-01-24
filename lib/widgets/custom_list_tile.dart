@@ -1,19 +1,13 @@
-﻿
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-
+﻿import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
   const CustomListTile({
     super.key,
     this.contentPadding,
-    this.leadingUrl,
     required this.title,
     this.subTitle,
     this.overline,
     this.color,
-    this.trailingImgUrl,
     this.trailing,
     this.height,
     this.horizontalTitleGap = 8,
@@ -40,9 +34,9 @@ class CustomListTile extends StatelessWidget {
     this.subTitleWidget,
   });
   final EdgeInsetsGeometry? contentPadding;
-  final String? leadingUrl;
+
   final Widget? leading;
-  final String? trailingImgUrl;
+
   final Widget? trailing;
   final String title;
   final String? subTitle;
@@ -74,7 +68,6 @@ class CustomListTile extends StatelessWidget {
   final Clip clipBehavior;
   @override
   Widget build(BuildContext context) {
-    // final lenta = context.customTheme.overlayLenta;
     return Container(
       clipBehavior: clipBehavior,
       decoration: BoxDecoration(
@@ -102,13 +95,7 @@ class CustomListTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: topLeadingGap),
-                      if (leadingUrl != null && leading == null)
-                        _NotificationImage(
-                          imageUrl: leadingUrl!,
-                          height: leadingHeight ?? 40,
-                          width: leadingWidth ?? 40,
-                        ),
-                      if (leading != null && leadingUrl == null) leading!,
+                      if (leading != null) leading!,
                       if (isLeadingTop == true) const Spacer()
                     ],
                   ),
@@ -120,7 +107,6 @@ class CustomListTile extends StatelessWidget {
                   ///
                   Expanded(
                     child: Column(
-                      // mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -128,7 +114,7 @@ class CustomListTile extends StatelessWidget {
                           title,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: titleStyle ?? TextStyle(fontSize: 16),
+                          style: titleStyle ?? const TextStyle(fontSize: 16),
                         ),
                         SizedBox(height: topSubTitleGap),
                         if (subTitle != null && subTitleWidget == null)
@@ -146,10 +132,8 @@ class CustomListTile extends StatelessWidget {
                             overline!,
                             overflow: TextOverflow.ellipsis,
                             style: overlineStyle ??
-                                TextStyle(
-                                    fontSize: 12,
-                                    // color: lenta?.colorOnSurfaceVariant,
-                                    fontWeight: FontWeight.w500),
+                                const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500),
                           ),
                         if (overlineWidget != null && overline == null)
                           overlineWidget!,
@@ -167,13 +151,7 @@ class CustomListTile extends StatelessWidget {
                         ? MainAxisAlignment.start
                         : MainAxisAlignment.center,
                     children: [
-                      if (trailingImgUrl != null && trailing == null)
-                        _NotificationImage(
-                            imageUrl: trailingImgUrl!,
-                            height: 56,
-                            width: 56,
-                            radius: 8),
-                      if (trailing != null && trailingImgUrl == null) trailing!,
+                      if (trailing != null) trailing!,
                       if (isTrailingTop == true) const Spacer()
                     ],
                   ),
@@ -182,95 +160,6 @@ class CustomListTile extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _NotificationImage extends StatelessWidget {
-  const _NotificationImage({
-    super.key,
-    required this.imageUrl,
-    this.width = 40,
-    this.height = 40,
-    this.radius = 100,
-  });
-  final double? width;
-  final double? height;
-  final double? radius;
-
-  final String imageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    // final lenta = context.customTheme.overlayLenta;
-
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(radius!),
-        shape: BoxShape.rectangle,
-        // image: DecorationImage(image: imageProvider)
-      ),
-      child: CachedNetworkImage(
-        imageUrl: imageUrl,
-        width: width,
-        height: height,
-
-        // borderRadius: BorderRadius.circular(radius!),
-        // shape: BoxShape.rectangle,
-        // clipBehavior: Clip.hardEdge,
-
-        progressIndicatorBuilder: (context, url, progress) => ColoredBox(
-          color: Colors.yellow,
-          child: Center(
-            child: SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                // color: AppColors.color5B6975,
-                value: progress.progress,
-              ),
-            ),
-          ),
-        ),
-        errorWidget: (context, url, error) => kNothing,
-        // imageBuilder: (context, imageProvider) =>
-        // Image.asset(AppImages.errorImage),
-
-        // ColoredBox(
-        //   color: AppColors.color152A3A,
-        //   child: Center(
-        //     child: SizedBox(
-        //       width: 24,
-        //       height: 24,
-        //       child: CircularProgressIndicator(
-        //         strokeWidth: 2,
-        //         color: AppColors.color5B6975,
-        //         // value: progress.progress,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        // Container(
-        //   clipBehavior: Clip.hardEdge,
-        //   decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(radius!),
-        //       shape: BoxShape.rectangle,
-        //       image: DecorationImage(image: imageProvider)),
-        // ),
-        // else if (state.extendedImageLoadState == LoadState.failed) {
-        //       return Padding(
-        //         padding: const EdgeInsets.all(4.0),
-        //         child: Image.asset(AppImages.errorImage),
-        //       );
-        //     } else {
-        // return state.completedWidget;
-        // }
-        // },
-        // imageUrl,
-        fit: BoxFit.cover,
       ),
     );
   }

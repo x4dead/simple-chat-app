@@ -1,13 +1,4 @@
-﻿import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:simple_chat_app/models/src/chat_dto.dart';
-import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/themes/colors/app_colors.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-import 'package:simple_chat_app/utils/extentions/converting.dart';
-import 'package:simple_chat_app/utils/resources/app_images.dart';
-import 'package:simple_chat_app/widgets/custom_list_tile.dart';
+﻿part of '../chat_page.dart';
 
 class ChatHeader extends ConsumerWidget {
   const ChatHeader({super.key});
@@ -30,7 +21,7 @@ class ChatHeader extends ConsumerWidget {
                   height: 36,
                   width: 36,
                   child: IconButton(
-                      padding: EdgeInsets.zero,
+                      padding: kPZero,
                       onPressed: () {
                         Navigator.pop(context);
                       },

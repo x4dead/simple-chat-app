@@ -1,9 +1,8 @@
 ﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/models/src/chat_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/pages/chat_list_page/widgets/chat_list_header.dart';
+import 'package:simple_chat_app/widgets/custom_chat_header.dart';
 import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/extentions/converting.dart';
@@ -25,7 +24,7 @@ class CreateChatPage extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const ChatListHeader(
+            const CustomChatHeader(
               titleStyle: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -37,16 +36,7 @@ class CreateChatPage extends ConsumerWidget {
             Expanded(
               child: StreamBuilder(
                   stream: ref.read(River.usersPod.notifier).getAllUsers(),
-                  builder:
-                      //  builder)
-                      // ref.watch(messagesProvider).when(
-
-                      (cts, snap) {
-                    // if (snap.connectionState == ConnectionState.waiting) {
-                    //   return const Center(
-                    //     child: CupertinoActivityIndicator(),
-                    //   );
-                    // } else
+                  builder: (cts, snap) {
                     if (snap.hasError) {
                       return Center(
                           child: Text(
@@ -63,15 +53,6 @@ class CreateChatPage extends ConsumerWidget {
                         ),
                       );
                     } else {
-                      // ref.watch(userProvider).when(
-                      //     loading: () =>
-                      //         const Center(child: CupertinoActivityIndicator()),
-                      // error: (error, stackTrace) => const Center(
-                      //         child: Text(
-                      //       'Error',
-                      //       style: TextStyle(color: Colors.red),
-                      //     )),
-                      // data: (data) {
                       return CustomScrollView(
                         slivers: [
                           SliverList.builder(
@@ -97,11 +78,8 @@ class CreateChatPage extends ConsumerWidget {
                                                   snap.data![index].isOnline,
                                               lastActive:
                                                   snap.data![index].lastActive,
-                                              // lastMessage: data[index].lastMessage,
-                                              // lastMessageDate: data[index].lastMessageDate,
                                               lastName:
                                                   snap.data![index].lastName,
-                                              // messageReceiverId: data[index].messageReceiverId,
                                               uid: snap.data![index].uid));
                                       await ref
                                           .read(River.chatsPod.notifier)
@@ -110,25 +88,26 @@ class CreateChatPage extends ConsumerWidget {
                                         if (loadingCtx != null) {
                                           Navigator.of(loadingCtx!).pop();
                                         }
-                                        Navigator.of(context)
-                                            .pushReplacement(
+                                        Navigator.of(context).pushReplacement(
                                           CupertinoPageRoute(
                                               builder: (context) =>
                                                   const ChatPage()),
                                         );
                                       });
                                     } catch (e) {
-                                      if (loadingCtx != null) {
-                                        Navigator.of(loadingCtx!).pop();
-                                      }
+                                      if (context.mounted) {
+                                        if (loadingCtx != null) {
+                                          Navigator.of(loadingCtx!).pop();
+                                        }
 
-                                      await showDialog(
-                                          context: context,
-                                          builder: (ctx) =>
-                                              CupertinoAlertDialog(
-                                                title: const Text("Error"),
-                                                content: Text(e.toString()),
-                                              ));
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) =>
+                                                CupertinoAlertDialog(
+                                                  title: const Text("Error"),
+                                                  content: Text(e.toString()),
+                                                ));
+                                      }
                                     }
                                   },
                                   horizontalTitleGap: 12,
@@ -193,24 +172,6 @@ class CreateChatPage extends ConsumerWidget {
                                     color: AppColors.color000000,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  // subTitleWidget: RichText(
-                                  //   text: TextSpan(
-                                  //     text: data[index].messageReceiverId ==
-                                  //             UserPref.getUserUid
-                                  //         ? 'Вы: '
-                                  //         : '',
-                                  //     children: [
-                                  //       TextSpan(
-                                  //           text: data[index].lastMessage,
-                                  //           style: const TextStyle(
-                                  //               color: AppColors.colorDarkGray))
-                                  //     ],
-                                  //     style: const TextStyle(
-                                  //         fontSize: 12,
-                                  //         fontWeight: FontWeight.w500,
-                                  //         color: AppColors.colorBlack),
-                                  //   ),
-                                  // ),
                                 ),
                               );
                             },

@@ -8,7 +8,7 @@ import 'package:simple_chat_app/models/src/user_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-import 'package:simple_chat_app/widgets/app_text_field.dart';
+import 'package:simple_chat_app/widgets/hint_text_field.dart';
 import 'package:simple_chat_app/widgets/field_from_class.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
@@ -109,7 +109,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           color: AppColors.colorBlack),
                     ),
                     kSBH25,
-                    AppTextField(
+                    HintTextField(
                         inputFormatters: FieldFormClass.regExpEmail,
                         controller: ref.watch(_isSignIn) == true
                             ? loginEmailController
@@ -123,7 +123,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         validator: (email) =>
                             FieldFormClass.validatorEmail(email)),
                     kSBH5,
-                    AppTextField(
+                    HintTextField(
                       inputFormatters: FieldFormClass.regExpPassword,
                       controller: ref.watch(_isSignIn) == true
                           ? loginPasswordController
@@ -150,7 +150,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ),
                     if (ref.watch(_isSignIn) == false) ...[
                       kSBH5,
-                      AppTextField(
+                      HintTextField(
                         inputFormatters: FieldFormClass.regExpPassword,
                         controller: ref.watch(_isSignIn) == true
                             ? loginPasswordController
@@ -187,7 +187,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         ),
                       ),
                       kSBH5,
-                      AppTextField(
+                      HintTextField(
                         hintText: 'Имя',
                         maxLength: 36,
                         prefixIcon: const Icon(
@@ -199,7 +199,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         controller: firstNameController,
                       ),
                       kSBH5,
-                      AppTextField(
+                      HintTextField(
                         hintText: 'Фамилия',
                         maxLength: 36,
                         prefixIcon: const Icon(

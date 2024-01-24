@@ -1,8 +1,4 @@
-﻿import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/themes/colors/app_colors.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-import 'package:simple_chat_app/utils/extentions/converting.dart';
+﻿part of '../chat_page.dart';
 
 class ChatDateTimeWidget extends ConsumerWidget {
   const ChatDateTimeWidget(this.date, {super.key});

@@ -58,99 +58,10 @@ class AppRouter {
                 child: const CreateChatPage(), key: state.pageKey);
           },
         ),
-        // StatefulShellRoute.indexedStack(
-        //     pageBuilder: (BuildContext context, GoRouterState state,
-        //             StatefulNavigationShell navigationShell) =>
-        //         FadeTransitionPage(
-        //           key: state.pageKey,
-        //           child: ScaffoldNavPage(navigationShell: navigationShell),
-        //         ),
-        //     branches: [
-        //       StatefulShellBranch(
-        //         routes: <RouteBase>[
-        //           GoRoute(
-        //             path: '/characters',
-        //             pageBuilder: (BuildContext context, GoRouterState state) =>
-        //                 FadeTransitionPage(
-        //                     key: state.pageKey,
-        //                     child: const AllCharacterScreen()),
-        //             routes: const <RouteBase>[
-        //               //!TODO Роуты для Профиля
-        //               // GoRoute(
-        //               //   path: 'details',
-        //               //   builder: (BuildContext context, GoRouterState state) =>
-        //               //       const DetailsScreen(label: 'A'),
-        //               // ),
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //       StatefulShellBranch(
-        //         routes: <RouteBase>[
-        //           GoRoute(
-        //             path: '/locations',
-        //             pageBuilder: (BuildContext context, GoRouterState state) =>
-        //                 FadeTransitionPage(
-        //                     key: state.pageKey,
-        //                     child: const Center(child: Text('Coming soon'))),
-        //             routes: const <RouteBase>[],
-        //           ),
-        //         ],
-        //       ),
-        //       StatefulShellBranch(
-        //         routes: <RouteBase>[
-        //           GoRoute(
-        //             path: '/episodes',
-        //             pageBuilder: (BuildContext context, GoRouterState state) =>
-        //                 FadeTransitionPage(
-        //                     key: state.pageKey,
-        //                     child: const Center(child: Text('Coming soon'))),
-        //             routes: const <RouteBase>[],
-        //           ),
-        //         ],
-        //       ),
-        //       StatefulShellBranch(
-        //         routes: <RouteBase>[
-        //           GoRoute(
-        //             path: '/settings',
-        //             pageBuilder: (BuildContext context, GoRouterState state) =>
-        //                 FadeTransitionPage(
-        //                     key: state.pageKey,
-        //                     child: const Center(child: Text('Coming soon'))),
-        //             routes: const <RouteBase>[],
-        //           ),
-        //         ],
-        //       ),
-        // ]),
       ],
-      errorBuilder: (context, state) => Center(child: Text('Not found'))
-      // NotFoundView(
-      // key: state.pageKey,
-      // )
-      );
+      errorBuilder: (context, state) =>
+          const Scaffold(body: Center(child: Text('Not found'))));
 }
-
-// class RT extends GoRouteInformationParser {
-//   RT({required super.configuration, required super.onParserException});
-//   @override
-//   Future<RouteMatchList> parseRouteInformation(
-//       RouteInformation routeInformation) async {
-//     if (routeInformation.uri.path == '/') {
-//       // The user entered the URL in the browser's address bar
-//       // Handle the initial route here
-//       return RouteMatchList(
-//           matches: [
-
-//           ],
-//           uri: routeInformation.uri,
-//           pathParameters: routeInformation.state as Map<String, String>);
-//     } else {
-//       // The route information was triggered by a link or by internal navigation
-//       // Parse the route information and return a MyConfiguration object
-//       return fromRouteInformation(routeInformation);
-//     }
-//   }
-// }
 
 class GoRouterObserver extends NavigatorObserver {
   @override

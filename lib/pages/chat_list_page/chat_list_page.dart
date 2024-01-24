@@ -2,10 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/pages/chat_list_page/widgets/chat_list_header.dart';
-import 'package:simple_chat_app/pages/chat_list_page/widgets/list_users_widget.dart';
+import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
+import 'package:simple_chat_app/utils/constants/ui_constants.dart';
+import 'package:simple_chat_app/utils/extentions/converting.dart';
+import 'package:simple_chat_app/utils/user_pref.dart';
+import 'package:simple_chat_app/widgets/custom_chat_header.dart';
 import 'package:simple_chat_app/pages/create_chat_page/create_chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
+import 'package:simple_chat_app/widgets/custom_list_tile.dart';
+
+part 'widgets/list_users_widget.dart';
 
 class ChatListPage extends ConsumerStatefulWidget {
   const ChatListPage({super.key});
@@ -67,7 +73,7 @@ class _ChatPageState extends ConsumerState<ChatListPage>
       body: const SafeArea(
         child: Column(
           children: [
-            ChatListHeader(),
+            CustomChatHeader(),
             ListUserWidget(),
           ],
         ),

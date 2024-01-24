@@ -1,21 +1,5 @@
-﻿import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_chat_app/models/src/message_dto.dart';
-import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/pages/chat_page/widgets/chat_date_time_widget.dart';
-import 'package:simple_chat_app/pages/chat_page/widgets/message_bubble_widget.dart';
-import 'package:simple_chat_app/themes/colors/app_colors.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-import 'package:simple_chat_app/utils/user_pref.dart';
+﻿part of '../chat_page.dart';
 
-// final messagesProvider = StreamProvider<List<MessageDto>>((
-//   ref,
-// ) {
-//   return ref
-//       .read(River.messagesPod.notifier)
-//       .getMessages(ref.watch(River.usersPod).selectedChat!.uid!);
-// });
 ScrollController scrollController = ScrollController();
 
 class MessagesListWidget extends ConsumerStatefulWidget {
@@ -34,16 +18,7 @@ class _MessageListWidgetState extends ConsumerState<MessagesListWidget> {
             stream: ref
                 .read(River.messagesPod.notifier)
                 .getMessages(ref.watch(River.chatsPod).selectedChat!.uid!),
-            builder:
-                //  builder)
-                // ref.watch(messagesProvider).when(
-
-                (cts, snap) {
-              // if (snap.connectionState == ConnectionState.waiting) {
-              //   return const Center(
-              //     child: CupertinoActivityIndicator(),
-              //   );
-              // } else
+            builder: (cts, snap) {
               if (snap.hasError) {
                 return const Center(
                     child: Text(
@@ -51,15 +26,7 @@ class _MessageListWidgetState extends ConsumerState<MessagesListWidget> {
                   style: TextStyle(color: Colors.red),
                 ));
               }
-              // error: (error, s) => const Center(
-              //         child: Text(
-              //       'Error',
-              //       style: TextStyle(color: Colors.red),
-              //     )),
-              // loading: () => const Center(
-              //       child: CupertinoActivityIndicator(),
-              //     ),
-              // data: (data) {
+
               if (snap.data?.isEmpty ?? true) {
                 return const Center(
                   child: Text(

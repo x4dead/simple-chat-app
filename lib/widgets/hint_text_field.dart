@@ -2,11 +2,9 @@
 import 'package:flutter/services.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
-// import '../../../../themes/colors/colors.dart';
-// import '../../../../themes/text_style/text_style.dart';
 
-class AppTextField extends StatefulWidget {
-  const AppTextField({
+class HintTextField extends StatefulWidget {
+  const HintTextField({
     Key? key,
     required this.hintText,
     this.maxLength,
@@ -43,10 +41,10 @@ class AppTextField extends StatefulWidget {
   final BoxConstraints? constraints;
   final BoxConstraints? prefixConstraints;
   @override
-  State<AppTextField> createState() => _AppTextFieldState();
+  State<HintTextField> createState() => _HintTextFieldState();
 }
 
-class _AppTextFieldState extends State<AppTextField> {
+class _HintTextFieldState extends State<HintTextField> {
   late List<TextInputFormatter> inputFormatters;
   @override
   void initState() {
@@ -94,11 +92,6 @@ class _AppTextFieldState extends State<AppTextField> {
         fillColor: AppColors.colorStroke,
         suffixIcon: widget.suffix,
         prefixIcon: widget.prefixIcon,
-        // Icon(
-        // widget.icon,
-        // color: AppColors.colorGray,
-        // ),
-
         enabledBorder: border,
         border: border,
         focusedBorder: border,

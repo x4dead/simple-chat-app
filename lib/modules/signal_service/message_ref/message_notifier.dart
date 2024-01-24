@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/models/src/message_dto.dart';
 import 'package:simple_chat_app/modules/signal_service/message_ref/message_state_ref.dart';
-import 'package:simple_chat_app/pages/chat_page/widgets/messages_list_widget.dart';
+import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
 
 class MessageNotifier extends StateNotifier<MessageStateRef> {
@@ -17,9 +17,6 @@ class MessageNotifier extends StateNotifier<MessageStateRef> {
       senderId: UserPref.getUserUid,
       sentTime: DateTime.now(),
     );
-    // if(){
-
-    // }
     await _firebase
         .collection('users')
         .doc(UserPref.getUserUid)

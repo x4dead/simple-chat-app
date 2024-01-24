@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/models/models.dart';
-import 'package:simple_chat_app/models/src/chat_dto.dart';
-
 import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
 

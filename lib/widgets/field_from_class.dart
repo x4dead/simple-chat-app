@@ -27,30 +27,10 @@
     if (password == null || password.length < 6) {
       //если длинна пароля меньше 6 символов выводиим ошибку
       return 'Пароль должен содержать не менее 6 символов';
-    }
-    // else if (!password.contains(RegExp(r'[A-Z]'))) {
-    //   //если пароль не содержит хотя бы одну заглавную букву выводим ошибку
-    //   return 'password_uppercase';
-    // } else if (!password.contains(RegExp(r'[a-z]'))) {
-    //   //если пароль не содержит хотя бы одну заглавную букву выводим ошибку
-    //   return 'password_lowercase';
-    // } else if (!password.contains(RegExp(r'[0-9]'))) {
-    //   return 'password_number';
-    // } else if (!password.contains(RegExp(r'[_!@#\$&*~]'))) {
-    //   return 'password_symbol';
-    // }
-    else {
+    } else {
       return null;
     }
   }
-
-  // static String? validatorOldNewPassword(
-  //     String passwordOld, String passwordNew) {
-  //   if (passwordNew == passwordOld) {
-  //     return "password_is_same";
-  //   }
-  //   return null;
-  // }
 
   static String? validatorNewPasswords(String password1, String password2) {
     if (password1 != password2 || password1.isEmpty) {

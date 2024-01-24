@@ -8,10 +8,10 @@ import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 import 'package:simple_chat_app/utils/resources/app_images.dart';
-import 'package:simple_chat_app/widgets/app_text_field.dart';
+import 'package:simple_chat_app/widgets/hint_text_field.dart';
 
-class ChatListHeader extends ConsumerStatefulWidget {
-  const ChatListHeader({
+class CustomChatHeader extends ConsumerStatefulWidget {
+  const CustomChatHeader({
     this.titleStyle,
     this.isGoBackButton = false,
     this.isSignOutButton = true,
@@ -31,8 +31,7 @@ class ChatListHeader extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatListHeaderState();
 }
 
-class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
-  // final FocusNode focusNode = FocusNode();
+class _ChatListHeaderState extends ConsumerState<CustomChatHeader> {
   final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,7 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
                   height: 36,
                   width: 36,
                   child: IconButton(
-                      padding: EdgeInsets.zero,
+                      padding: kPZero,
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -84,7 +83,7 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
             ],
           ),
           kSBH6,
-          AppTextField(
+          HintTextField(
             hintText: 'Поиск',
             isDense: true,
             controller: textController,
@@ -92,7 +91,7 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
             onFieldSubmitted: widget.onSubmitted,
             constraints: const BoxConstraints(maxHeight: 42),
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 11.5, horizontal:8),
+                const EdgeInsets.symmetric(vertical: 11.5, horizontal: 8),
             prefixConstraints:
                 const BoxConstraints(maxHeight: 24, maxWidth: 38),
             prefixIcon: Padding(
@@ -100,7 +99,6 @@ class _ChatListHeaderState extends ConsumerState<ChatListHeader> {
               child: SvgPicture.asset(AppImages.search),
             ),
           ),
-        
         ],
       ),
     );

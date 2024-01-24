@@ -3,5 +3,3 @@ extension FigmaDimention on double {
     return this / fontSize;
   }
 }
-
-enum FigmaBreakpoint { mobile, tablet, small, medium, large }

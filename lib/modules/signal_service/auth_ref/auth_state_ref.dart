@@ -7,7 +7,6 @@ class AuthStateRef {
     this.isLoading = false,
     this.isAuth = false,
   });
-  // int get id => int.parse(UserPref.getUserId);
   String? get uid => UserPref.getUserUid;
   AuthStateRef copyWith({
     bool? isAuth,

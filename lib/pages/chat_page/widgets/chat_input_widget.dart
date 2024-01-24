@@ -1,14 +1,4 @@
-﻿import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:simple_chat_app/models/src/chat_dto.dart';
-import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/themes/colors/app_colors.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
-import 'package:simple_chat_app/utils/extentions/figma_height.dart';
-import 'package:simple_chat_app/utils/resources/app_images.dart';
-import 'package:simple_chat_app/utils/user_pref.dart';
-import 'package:simple_chat_app/widgets/app_text_field.dart';
+﻿part of '../chat_page.dart';
 
 class ChatInputWidget extends ConsumerStatefulWidget {
   const ChatInputWidget({super.key});
@@ -32,14 +22,11 @@ class _ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
             height: 42,
             width: 42,
             child: IconButton(
-                onPressed: () {
-                  ///TODO
-                },
-                icon: SvgPicture.asset(AppImages.attach)),
+                onPressed: () {}, icon: SvgPicture.asset(AppImages.attach)),
           ),
           kSBW8,
           Expanded(
-            child: AppTextField(
+            child: HintTextField(
               hintText: 'Сообщение',
               controller: textController,
               onFieldSubmitted: (value) async {
@@ -95,10 +82,7 @@ class _ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
             height: 42,
             width: 42,
             child: IconButton(
-                onPressed: () {
-                  ///TODO
-                },
-                icon: SvgPicture.asset(AppImages.audio)),
+                onPressed: () {}, icon: SvgPicture.asset(AppImages.audio)),
           ),
         ],
       ),
