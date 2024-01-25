@@ -14,12 +14,18 @@ final userProvider = StreamProvider<List<UserDto>?>(
   (ref) => ref.read(River.usersPod.notifier).getAllUsers(),
 );
 
-class CreateChatPage extends ConsumerWidget {
+class CreateChatPage extends ConsumerStatefulWidget {
   const CreateChatPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    BuildContext? loadingCtx;
+  ConsumerState<CreateChatPage> createState() => _CreateChatPageState();
+}
+
+class _CreateChatPageState extends ConsumerState<CreateChatPage> {
+  BuildContext? loadingCtx;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,15 +63,15 @@ class CreateChatPage extends ConsumerWidget {
                         slivers: [
                           SliverList.builder(
                             itemCount: snap.data?.length,
-                            itemBuilder: (context, index) {
+                            itemBuilder: (listContext, index) {
                               return IntrinsicHeight(
                                 child: CustomListTile(
                                   onTap: () async {
                                     try {
                                       showCupertinoDialog(
                                         context: context,
-                                        builder: (loadingContext) {
-                                          loadingCtx = loadingContext;
+                                        builder: (dialogCtx) {
+                                          loadingCtx = dialogCtx;
                                           return const CupertinoActivityIndicator();
                                         },
                                       );
@@ -86,9 +92,10 @@ class CreateChatPage extends ConsumerWidget {
                                           .createChat()
                                           .then((value) {
                                         if (loadingCtx != null) {
-                                          Navigator.of(loadingCtx!).pop();
+                                          Navigator.pop(loadingCtx!);
                                         }
-                                        Navigator.of(context).pushReplacement(
+                                        Navigator.pushReplacement(
+                                          context,
                                           CupertinoPageRoute(
                                               builder: (context) =>
                                                   const ChatPage()),
@@ -96,9 +103,7 @@ class CreateChatPage extends ConsumerWidget {
                                       });
                                     } catch (e) {
                                       if (context.mounted) {
-                                        if (loadingCtx != null) {
-                                          Navigator.of(loadingCtx!).pop();
-                                        }
+                                        Navigator.of(context).pop();
 
                                         showDialog(
                                             context: context,

@@ -70,7 +70,16 @@ class _ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                         mainUid: selectedChatUid,
                         updatedChatUid: UserPref.getUserUid);
                   }
-                } catch (e) {}
+                } catch (e) {
+                  if (mounted) {
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => CupertinoAlertDialog(
+                              title: const Text("Error"),
+                              content: Text(e.toString()),
+                            ));
+                  }
+                }
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 11.5),

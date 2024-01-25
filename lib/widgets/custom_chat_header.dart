@@ -32,6 +32,7 @@ class CustomChatHeader extends ConsumerStatefulWidget {
 }
 
 class _ChatListHeaderState extends ConsumerState<CustomChatHeader> {
+  BuildContext? loadingCtx;
   final TextEditingController textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -72,9 +73,43 @@ class _ChatListHeaderState extends ConsumerState<CustomChatHeader> {
                   height: 39,
                   width: 39,
                   child: IconButton(
-                      onPressed: () async => await ref
-                          .read(River.authPod.notifier)
-                          .signOut(context),
+                      onPressed: () async {
+                        try {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (loadingContext) {
+                              loadingCtx = loadingContext;
+                              return const CupertinoActivityIndicator();
+                            },
+                          );
+                          await ref
+                              .read(River.usersPod.notifier)
+                              .updateUserData({
+                            "last_active": DateTime.now().toIso8601String(),
+                            "is_online": false,
+                          });
+                          if (context.mounted) {
+                            await ref
+                                .read(River.authPod.notifier)
+                                .signOut(context);
+                          }
+                          if (loadingCtx != null) {
+                            Navigator.of(loadingCtx!).pop();
+                          }
+                        } catch (e) {
+                          if (loadingCtx != null) {
+                            Navigator.of(loadingCtx!).pop();
+                          }
+                          if (mounted) {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) => CupertinoAlertDialog(
+                                      title: const Text("Error"),
+                                      content: Text(e.toString()),
+                                    ));
+                          }
+                        }
+                      },
                       icon: const Icon(
                         CupertinoIcons.square_arrow_right,
                       )),

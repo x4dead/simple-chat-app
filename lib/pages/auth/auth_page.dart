@@ -256,11 +256,18 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                               await ref.read(River.authPod.notifier).login(
                                   email: loginEmailController.text,
                                   password: loginPasswordController.text);
+                              await ref
+                                  .read(River.usersPod.notifier)
+                                  .updateUserData({
+                                "last_active": DateTime.now().toIso8601String(),
+                                "is_online": true,
+                              });
                             } else {
                               await ref.read(River.authPod.notifier).signUp(
                                   user: UserDto(
                                       firstName: firstNameController.text,
                                       lastActive: DateTime.now(),
+                                      isOnline: true,
                                       lastName: lastNameController.text,
                                       email: signUpEmailController.text,
                                       password: signUpPasswordController.text));

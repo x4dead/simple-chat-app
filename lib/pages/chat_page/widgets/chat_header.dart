@@ -7,7 +7,7 @@ class ChatHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ChatDto user = ref.watch(River.chatsPod).selectedChat ?? ChatDto();
     return StreamBuilder(
-        stream: ref.watch(River.usersPod.notifier).getOnlineStatus(user),
+        stream: ref.watch(River.usersPod.notifier).getUser(user.uid!),
         builder: (context, snapshot) {
           return CustomListTile(
             height: 100,
@@ -23,7 +23,8 @@ class ChatHeader extends ConsumerWidget {
                   child: IconButton(
                       padding: kPZero,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
                       },
                       icon: SvgPicture.asset(AppImages.arrowLeft)),
                 ),
@@ -62,11 +63,11 @@ class ChatHeader extends ConsumerWidget {
               color: AppColors.color000000,
               fontWeight: FontWeight.bold,
             ),
-            subTitle: snapshot.data == true
+            subTitle: snapshot.data?.isOnline == true
                 ? 'В сети'
-                : user.lastActive != null
+                : snapshot.data?.lastActive != null
                     ? Converting.getUserLastActive(
-                        user.lastActive!.toIso8601String())
+                        snapshot.data!.lastActive!.toIso8601String())
                     : '',
             subTitleStyle: const TextStyle(
                 fontSize: 12,

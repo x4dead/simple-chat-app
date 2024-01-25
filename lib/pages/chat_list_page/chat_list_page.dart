@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
-import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
@@ -34,6 +33,7 @@ class _ChatPageState extends ConsumerState<ChatListPage>
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
       case AppLifecycleState.resumed:
         ref.read(River.usersPod.notifier).updateUserData({
           "last_active": DateTime.now().toIso8601String(),

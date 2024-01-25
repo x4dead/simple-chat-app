@@ -16,7 +16,7 @@ import 'package:simple_chat_app/modules/signal_service/user_ref/user_state_ref.d
 class River {
   static final usersPod = StateNotifierProvider<UserNotifier, UserStateRef>(
       (ref) => UserNotifier());
-        static final chatsPod = StateNotifierProvider<ChatNotifier, ChatStateRef>(
+  static final chatsPod = StateNotifierProvider<ChatNotifier, ChatStateRef>(
       (ref) => ChatNotifier());
   static final messagesPod =
       StateNotifierProvider<MessageNotifier, MessageStateRef>(

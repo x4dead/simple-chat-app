@@ -13,7 +13,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
     state = state.copyWith(selectedChat: chat);
   }
 
-  Stream<List<ChatDto>> getAllChats() {
+  Stream<List<ChatDto>> getAllChatModels() {
     List<ChatDto> chats = [];
 
     try {
@@ -45,6 +45,7 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
           .collection("users")
           .doc(mainUserId ?? UserPref.getUserUid)
           .collection('chat')
+          .orderBy('last_active', descending: true)
           .get()
           .then((event) async {
         if (event.docs.isNotEmpty) {

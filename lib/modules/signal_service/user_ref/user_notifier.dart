@@ -49,6 +49,20 @@ class UserNotifier extends StateNotifier<UserStateRef> {
     }
   }
 
+  Stream<UserDto> getUser(String uid) {
+    try {
+      return _firebase
+          .collection('users')
+          .doc(uid)
+          .snapshots(includeMetadataChanges: true)
+          .map((snapshot) {
+        return UserDto.fromMap(snapshot.data()!);
+      });
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
   Future<UserDto> getUserByUid({String? uid}) async {
     try {
       return _firebase
