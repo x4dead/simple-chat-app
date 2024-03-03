@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:simple_chat_app/utils/constants/ui_constants.dart';
 
 class Converting {
   static String getMessageDate(DateTime createdDate) {
@@ -85,9 +86,7 @@ class Converting {
         _ => 'none'
       });
     } else if (updatedDate.year == now.year && isChatDateTime == false) {
-      final dateFormat = DateFormat('d MMM');
-
-      buffer.write(dateFormat.format(updatedDate));
+      buffer.write('${updatedDate.day} ${middleMonth[updatedDate.month - 1]}');
     } else {
       final dateFormat = DateFormat(
         'dd.MM.yy',

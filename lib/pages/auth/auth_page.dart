@@ -40,10 +40,16 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   final TextEditingController loginEmailController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  @override
-  initState() {
-    super.initState();
-  }
+  final FocusNode mailFocus = FocusNode();
+  final FocusNode passwordFocus = FocusNode();
+  final FocusNode confirmPassFocus = FocusNode();
+  final FocusNode firstNameFocus = FocusNode();
+  final FocusNode lastNameFocus = FocusNode();
+
+  // @override
+  // initState() {
+  //   super.initState();
+  // }
 
   @override
   dispose() {
@@ -110,20 +116,31 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ),
                     kSBH25,
                     HintTextField(
-                        inputFormatters: FieldFormClass.regExpEmail,
-                        controller: ref.watch(_isSignIn) == true
-                            ? loginEmailController
-                            : signUpEmailController,
-                        prefixIcon: const Icon(
-                          CupertinoIcons.mail,
-                          color: AppColors.colorGray,
-                        ),
-                        maxLength: 36,
-                        hintText: 'Почта',
-                        validator: (email) =>
-                            FieldFormClass.validatorEmail(email)),
+                      focusNode: mailFocus,
+                      key: ref.watch(_isSignIn) == true
+                          ? const ValueKey('signInMail')
+                          : const ValueKey('signUpMail'),
+                      inputFormatters: FieldFormClass.regExpEmail,
+                      controller: ref.watch(_isSignIn) == true
+                          ? loginEmailController
+                          : signUpEmailController,
+                      prefixIcon: const Icon(
+                        CupertinoIcons.mail,
+                        color: AppColors.colorGray,
+                      ),
+                      maxLength: 36,
+                      hintText: 'Почта',
+                      validator: (email) {
+                        return FieldFormClass.validatorEmail(email);
+                      },
+                      onEditingComplete: () => mailFocus.nextFocus(),
+                    ),
                     kSBH5,
                     HintTextField(
+                      focusNode: passwordFocus,
+                      key: ref.watch(_isSignIn) == true
+                          ? const ValueKey('signInPassword')
+                          : const ValueKey('signUpPassword'),
                       inputFormatters: FieldFormClass.regExpPassword,
                       controller: ref.watch(_isSignIn) == true
                           ? loginPasswordController
@@ -147,10 +164,18 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           color: AppColors.colorBlack.withOpacity(0.9),
                         ),
                       ),
+                      onEditingComplete: () {
+                        if (ref.watch(_isSignIn) == true) {
+                          onSubmit();
+                        } else {
+                          confirmPassFocus.requestFocus();
+                        }
+                      },
                     ),
                     if (ref.watch(_isSignIn) == false) ...[
                       kSBH5,
                       HintTextField(
+                        focusNode: confirmPassFocus,
                         inputFormatters: FieldFormClass.regExpPassword,
                         controller: ref.watch(_isSignIn) == true
                             ? loginPasswordController
@@ -185,9 +210,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                             color: AppColors.colorBlack.withOpacity(0.9),
                           ),
                         ),
+                        onEditingComplete: () {
+                          firstNameFocus.requestFocus();
+                        },
                       ),
                       kSBH5,
                       HintTextField(
+                        focusNode: firstNameFocus,
                         hintText: 'Имя',
                         maxLength: 36,
                         prefixIcon: const Icon(
@@ -197,9 +226,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         inputFormatters: FieldFormClass.regExpName,
                         validator: (name) => FieldFormClass.validatorName(name),
                         controller: firstNameController,
+                        onEditingComplete: () {
+                          firstNameFocus.nextFocus();
+                        },
                       ),
                       kSBH5,
                       HintTextField(
+                        focusNode: lastNameFocus,
                         hintText: 'Фамилия',
                         maxLength: 36,
                         prefixIcon: const Icon(
@@ -209,6 +242,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         inputFormatters: FieldFormClass.regExpName,
                         validator: (name) => FieldFormClass.validatorName(name),
                         controller: lastNameController,
+                        onEditingComplete: () {
+                          onSubmit();
+                        },
                       ),
                     ],
                     kSBH20,
@@ -222,78 +258,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                               Size(double.infinity, 60)),
                           overlayColor: MaterialStatePropertyAll(
                               AppColors.colorBlack.withOpacity(0.08))),
-                      onPressed: () async {
-                        if (ref.watch(_isSignIn) == true
-                            ? (FieldFormClass.validatorEmail(loginEmailController.text) ==
-                                    null &&
-                                FieldFormClass.validatorPassword(
-                                        loginPasswordController.text) ==
-                                    null)
-                            : (FieldFormClass.validatorEmail(
-                                            signUpEmailController.text) ==
-                                        null &&
-                                    FieldFormClass.validatorPassword(
-                                            signUpPasswordController.text) ==
-                                        null) &&
-                                FieldFormClass.validatorNewPasswords(
-                                        signUpConfirmPasswordController.text,
-                                        signUpPasswordController.text) ==
-                                    null &&
-                                FieldFormClass.validatorName(firstNameController.text) ==
-                                    null &&
-                                FieldFormClass.validatorName(lastNameController.text) ==
-                                    null) {
-                          try {
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (loadingContext) {
-                                loadingCtx = loadingContext;
-                                return const CupertinoActivityIndicator();
-                              },
-                            );
-                            await Future.delayed(const Duration(seconds: 2));
-                            if (ref.watch(_isSignIn) == true) {
-                              await ref.read(River.authPod.notifier).login(
-                                  email: loginEmailController.text,
-                                  password: loginPasswordController.text);
-                              await ref
-                                  .read(River.usersPod.notifier)
-                                  .updateUserData({
-                                "last_active": DateTime.now().toIso8601String(),
-                                "is_online": true,
-                              });
-                            } else {
-                              await ref.read(River.authPod.notifier).signUp(
-                                  user: UserDto(
-                                      firstName: firstNameController.text,
-                                      lastActive: DateTime.now(),
-                                      isOnline: true,
-                                      lastName: lastNameController.text,
-                                      email: signUpEmailController.text,
-                                      password: signUpPasswordController.text));
-                            }
-                            if (mounted) {
-                              context.go('/chat_list');
-                            }
-
-                            if (loadingCtx != null) {
-                              Navigator.of(loadingCtx!).pop();
-                            }
-                          } catch (e) {
-                            if (loadingCtx != null) {
-                              Navigator.of(loadingCtx!).pop();
-                            }
-                            if (mounted) {
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) => CupertinoAlertDialog(
-                                        title: const Text("Error"),
-                                        content: Text(e.toString()),
-                                      ));
-                            }
-                          }
-                        }
-                      },
+                      onPressed: onSubmit,
                       child: Center(
                         child: Text(
                           ref.watch(_isSignIn) == true
@@ -343,5 +308,70 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         ),
       ),
     );
+  }
+
+  onSubmit() async {
+    if (ref.watch(_isSignIn) == true
+        ? (FieldFormClass.validatorEmail(loginEmailController.text) == null &&
+            FieldFormClass.validatorPassword(loginPasswordController.text) ==
+                null)
+        : (FieldFormClass.validatorEmail(signUpEmailController.text) == null &&
+                FieldFormClass.validatorPassword(
+                        signUpPasswordController.text) ==
+                    null) &&
+            FieldFormClass.validatorNewPasswords(
+                    signUpConfirmPasswordController.text,
+                    signUpPasswordController.text) ==
+                null &&
+            FieldFormClass.validatorName(firstNameController.text) == null &&
+            FieldFormClass.validatorName(lastNameController.text) == null) {
+      try {
+        showCupertinoDialog(
+          context: context,
+          builder: (loadingContext) {
+            loadingCtx = loadingContext;
+            return const CupertinoActivityIndicator();
+          },
+        );
+        await Future.delayed(const Duration(seconds: 2));
+        if (ref.watch(_isSignIn) == true) {
+          await ref.read(River.authPod.notifier).login(
+              email: loginEmailController.text,
+              password: loginPasswordController.text);
+          await ref.read(River.usersPod.notifier).updateUserData({
+            "last_active": DateTime.now().toIso8601String(),
+            "is_online": true,
+          });
+        } else {
+          await ref.read(River.authPod.notifier).signUp(
+              user: UserDto(
+                  firstName: firstNameController.text,
+                  lastActive: DateTime.now(),
+                  isOnline: true,
+                  lastName: lastNameController.text,
+                  email: signUpEmailController.text,
+                  password: signUpPasswordController.text));
+        }
+        if (mounted) {
+          context.go('/chat_list');
+        }
+
+        if (loadingCtx != null) {
+          Navigator.of(loadingCtx!).pop();
+        }
+      } catch (e) {
+        if (loadingCtx != null) {
+          Navigator.of(loadingCtx!).pop();
+        }
+        if (mounted) {
+          showDialog(
+              context: context,
+              builder: (ctx) => CupertinoAlertDialog(
+                    title: const Text("Error"),
+                    content: Text(e.toString()),
+                  ));
+        }
+      }
+    }
   }
 }

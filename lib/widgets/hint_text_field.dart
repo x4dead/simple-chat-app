@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 
-class HintTextField extends StatefulWidget {
+class HintTextField extends StatelessWidget {
   const HintTextField({
     Key? key,
     required this.hintText,
@@ -22,6 +22,8 @@ class HintTextField extends StatefulWidget {
     this.isDense,
     this.constraints,
     this.prefixConstraints,
+    this.focusNode,
+    this.onEditingComplete,
   }) : super(key: key);
   final String hintText;
   final int? maxLength;
@@ -36,62 +38,55 @@ class HintTextField extends StatefulWidget {
   final RegExp? inputFormatters;
   final EdgeInsetsGeometry? contentPadding;
   final Function(String)? onFieldSubmitted;
+  final Function()? onEditingComplete;
   final Function(String)? onChanged;
   final bool? isDense;
   final BoxConstraints? constraints;
+  final FocusNode? focusNode;
   final BoxConstraints? prefixConstraints;
-  @override
-  State<HintTextField> createState() => _HintTextFieldState();
-}
-
-class _HintTextFieldState extends State<HintTextField> {
-  late List<TextInputFormatter> inputFormatters;
-  @override
-  void initState() {
-    super.initState();
-
-    inputFormatters = widget.inputFormatters == null
-        ? <TextInputFormatter>[]
-        : [FilteringTextInputFormatter.allow(widget.inputFormatters!)];
-  }
-
+  // @override
   @override
   Widget build(BuildContext context) {
+    List<TextInputFormatter> inputFormatter = inputFormatters == null
+        ? []
+        : [FilteringTextInputFormatter.allow(inputFormatters!)];
     final border = OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(width: 0, color: AppColors.colorStroke),
         gapPadding: 6);
     return TextFormField(
-      onFieldSubmitted: widget.onFieldSubmitted,
-      onChanged: widget.onChanged,
-      inputFormatters: inputFormatters,
-      obscureText: widget.obscureText ?? false,
-      maxLength: widget.maxLength,
-      controller: widget.controller,
-      validator: widget.validator,
-      style: widget.style ??
+      focusNode: focusNode,
+      onEditingComplete: onEditingComplete,
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      inputFormatters: inputFormatter,
+      obscureText: obscureText ?? false,
+      maxLength: maxLength,
+      controller: controller,
+      validator: validator,
+      style: style ??
           TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
             height: 19.0.toFigmaHeight(16.0),
           ),
       decoration: InputDecoration(
-        constraints: widget.constraints,
-        prefixIconConstraints: widget.prefixConstraints,
-        isDense: widget.isDense,
-        contentPadding: widget.contentPadding ??
+        constraints: constraints,
+        prefixIconConstraints: prefixConstraints,
+        isDense: isDense,
+        contentPadding: contentPadding ??
             const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         counterText: '',
-        hintText: widget.hintText,
-        hintStyle: widget.hintStyle ??
+        hintText: hintText,
+        hintStyle: hintStyle ??
             const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: AppColors.colorGray),
         filled: true,
         fillColor: AppColors.colorStroke,
-        suffixIcon: widget.suffix,
-        prefixIcon: widget.prefixIcon,
+        suffixIcon: suffix,
+        prefixIcon: prefixIcon,
         enabledBorder: border,
         border: border,
         focusedBorder: border,

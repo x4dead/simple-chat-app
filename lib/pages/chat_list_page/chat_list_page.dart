@@ -26,6 +26,10 @@ class _ChatPageState extends ConsumerState<ChatListPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    ref.read(River.usersPod.notifier).updateUserData({
+      "last_active": DateTime.now().toIso8601String(),
+      "is_online": true,
+    });
   }
 
   @override
@@ -53,7 +57,9 @@ class _ChatPageState extends ConsumerState<ChatListPage>
 
   @override
   void dispose() {
+    ref.read(River.usersPod.notifier).updateUserData({"is_online": false});
     WidgetsBinding.instance.removeObserver(this);
+
     super.dispose();
   }
 

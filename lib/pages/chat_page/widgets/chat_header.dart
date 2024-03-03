@@ -10,8 +10,8 @@ class ChatHeader extends ConsumerWidget {
         stream: ref.watch(River.usersPod.notifier).getUser(user.uid!),
         builder: (context, snapshot) {
           return CustomListTile(
-            height: 100,
-            contentPadding: const EdgeInsets.fromLTRB(20, 38, 32, 12),
+            height: 74,
+            contentPadding: const EdgeInsets.fromLTRB(20, 12, 32, 12),
             horizontalTitleGap: 12,
             isLeadingTop: false,
             leading: Row(

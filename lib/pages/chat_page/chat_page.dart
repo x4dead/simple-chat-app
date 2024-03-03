@@ -32,14 +32,16 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: AppColors.colorWhite,
-      body: Column(
-        children: [
-          ChatHeader(),
-          Divider(color: AppColors.colorStroke, height: 1),
-          MessagesListWidget(),
-          Divider(color: AppColors.colorStroke, height: 1),
-          ChatInputWidget()
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            ChatHeader(),
+            Divider(color: AppColors.colorStroke, height: 1),
+            MessagesListWidget(),
+            Divider(color: AppColors.colorStroke, height: 1),
+            ChatInputWidget()
+          ],
+        ),
       ),
     );
   }

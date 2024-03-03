@@ -22,3 +22,17 @@ const kPZero = EdgeInsets.zero;
 
 //BorderRadius
 const Radius bubbleRadius = Radius.circular(16);
+const List<String> middleMonth = [
+  "Янв",
+  "Фев",
+  "Мар",
+  "Апр",
+  "Май",
+  "Июн",
+  "Июл",
+  "Авг",
+  "Сен",
+  "Окт",
+  "Ноя",
+  "Дек",
+];

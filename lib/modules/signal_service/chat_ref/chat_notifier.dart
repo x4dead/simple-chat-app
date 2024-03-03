@@ -21,7 +21,8 @@ class ChatNotifier extends StateNotifier<ChatStateRef> {
           .collection('users')
           .doc(UserPref.getUserUid)
           .collection('chat')
-          .orderBy('last_active', descending: true)
+          // .orderBy('last_active', descending: true)
+          .orderBy('last_message_date', descending: true)
           .snapshots(includeMetadataChanges: true)
           .map((snapshot) {
         chats =
