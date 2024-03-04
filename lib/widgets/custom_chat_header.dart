@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/constants/ui_constants.dart';
@@ -52,7 +53,7 @@ class _ChatListHeaderState extends ConsumerState<CustomChatHeader> {
                   child: IconButton(
                       padding: kPZero,
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       icon: SvgPicture.asset(AppImages.arrowLeft)),
                 ),

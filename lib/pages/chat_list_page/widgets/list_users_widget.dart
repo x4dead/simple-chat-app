@@ -22,6 +22,8 @@ class ListUserWidget extends ConsumerWidget {
                   style: TextStyle(color: AppColors.colorBlack),
                 ),
               );
+            } else if (value.connectionState == ConnectionState.waiting) {
+              return const Center(child: CupertinoActivityIndicator());
             } else {
               return CustomScrollView(
                 slivers: [
@@ -39,11 +41,7 @@ class ListUserWidget extends ConsumerWidget {
                                 ref
                                     .read(River.chatsPod.notifier)
                                     .setSelectedChat(value.data![index]);
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            const ChatPage()));
+                                context.pushNamed('chat');
                               },
                               horizontalTitleGap: 12,
                               contentPadding:

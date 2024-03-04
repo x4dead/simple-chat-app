@@ -1,9 +1,9 @@
 ﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
 import 'package:simple_chat_app/widgets/custom_chat_header.dart';
-import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/widgets/custom_list_tile.dart';
@@ -94,12 +94,7 @@ class _CreateChatPageState extends ConsumerState<CreateChatPage> {
                                         if (loadingCtx != null) {
                                           Navigator.pop(loadingCtx!);
                                         }
-                                        Navigator.pushReplacement(
-                                          context,
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  const ChatPage()),
-                                        );
+                                        context.pushReplacementNamed('chat');
                                       });
                                     } catch (e) {
                                       if (context.mounted) {

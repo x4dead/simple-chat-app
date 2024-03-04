@@ -1,13 +1,12 @@
 ﻿import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_chat_app/modules/signal_service/river/river.dart';
-import 'package:simple_chat_app/pages/chat_page/chat_page.dart';
 import 'package:simple_chat_app/utils/extentions/converting.dart';
 import 'package:simple_chat_app/utils/extentions/figma_height.dart';
 import 'package:simple_chat_app/utils/user_pref.dart';
 import 'package:simple_chat_app/widgets/custom_chat_header.dart';
-import 'package:simple_chat_app/pages/create_chat_page/create_chat_page.dart';
 import 'package:simple_chat_app/themes/colors/app_colors.dart';
 import 'package:simple_chat_app/widgets/custom_list_tile.dart';
 
@@ -68,8 +67,7 @@ class _ChatPageState extends ConsumerState<ChatListPage>
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (ctx) => const CreateChatPage()));
+            context.pushNamed('create_chat');
           },
           backgroundColor: AppColors.colorStroke,
           child: const Icon(

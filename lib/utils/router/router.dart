@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_chat_app/pages/auth/auth_page.dart';
@@ -45,16 +46,17 @@ class AppRouter {
           },
         ),
         GoRoute(
+          name: 'chat',
           path: '/chat',
           pageBuilder: (context, state) {
-            return FadeTransitionPage(
-                child: const ChatPage(), key: state.pageKey);
+            return CupertinoPage(child: const ChatPage(), key: state.pageKey);
           },
         ),
         GoRoute(
+          name: 'create_chat',
           path: '/create_chat',
           pageBuilder: (context, state) {
-            return FadeTransitionPage(
+            return CupertinoPage(
                 child: const CreateChatPage(), key: state.pageKey);
           },
         ),
