@@ -22,8 +22,9 @@ class AuthPage extends ConsumerStatefulWidget {
 
 class _AuthPageState extends ConsumerState<AuthPage> {
   BuildContext? loadingCtx;
-  final _isObscure = StateProvider<bool>((ref) => false);
-  final _isConfirmPasswordObscure = StateProvider<bool>((ref) => false);
+  final _isSignInPassObscure = StateProvider<bool>((ref) => false);
+  final _isSignUpPassObscure = StateProvider<bool>((ref) => false);
+  final _isConfirmPassObscure = StateProvider<bool>((ref) => false);
   final _isSignIn = StateProvider<bool>((ref) => true);
 
   ///sign up
@@ -66,10 +67,18 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   VoidCallback toggleScreenOrButton({bool isButton = false}) {
     return () {
       if (isButton == true) {
-        if (ref.watch(_isObscure) == true) {
-          ref.read(_isObscure.notifier).state = false;
+        if (ref.watch(_isSignIn) == true) {
+          if (ref.watch(_isSignInPassObscure) == true) {
+            ref.read(_isSignInPassObscure.notifier).state = false;
+          } else {
+            ref.read(_isSignInPassObscure.notifier).state = true;
+          }
         } else {
-          ref.read(_isObscure.notifier).state = true;
+          if (ref.watch(_isSignUpPassObscure) == true) {
+            ref.read(_isSignUpPassObscure.notifier).state = false;
+          } else {
+            ref.read(_isSignUpPassObscure.notifier).state = true;
+          }
         }
       } else {
         if (ref.watch(_isSignIn) == true) {
@@ -138,9 +147,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     kSBH5,
                     HintTextField(
                       focusNode: passwordFocus,
-                      key: ref.watch(_isSignIn) == true
-                          ? const ValueKey('signInPassword')
-                          : const ValueKey('signUpPassword'),
                       inputFormatters: FieldFormClass.regExpPassword,
                       controller: ref.watch(_isSignIn) == true
                           ? loginPasswordController
@@ -149,7 +155,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         CupertinoIcons.lock,
                         color: AppColors.colorGray,
                       ),
-                      obscureText: ref.watch(_isObscure),
+                      obscureText: ref.watch(ref.watch(_isSignIn) == true
+                          ? _isSignInPassObscure
+                          : _isSignUpPassObscure),
                       maxLength: 32,
                       hintText: 'Пароль',
                       validator: (password) =>
@@ -158,7 +166,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         splashRadius: 15,
                         onPressed: toggleScreenOrButton(isButton: true),
                         icon: Icon(
-                          ref.watch(_isObscure) == true
+                          ref.watch(ref.watch(_isSignIn) == true
+                                      ? _isSignInPassObscure
+                                      : _isSignUpPassObscure) ==
+                                  true
                               ? CupertinoIcons.eye_fill
                               : CupertinoIcons.eye_slash_fill,
                           color: AppColors.colorBlack.withOpacity(0.9),
@@ -184,7 +195,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           CupertinoIcons.lock,
                           color: AppColors.colorGray,
                         ),
-                        obscureText: ref.watch(_isConfirmPasswordObscure),
+                        obscureText: ref.watch(_isConfirmPassObscure),
                         maxLength: 32,
                         hintText: 'Подтвердить пароль',
                         validator: (password) =>
@@ -193,18 +204,16 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         suffix: IconButton(
                           splashRadius: 15,
                           onPressed: () {
-                            if (ref.watch(_isConfirmPasswordObscure) == true) {
-                              ref
-                                  .read(_isConfirmPasswordObscure.notifier)
-                                  .state = false;
+                            if (ref.watch(_isConfirmPassObscure) == true) {
+                              ref.read(_isConfirmPassObscure.notifier).state =
+                                  false;
                             } else {
-                              ref
-                                  .read(_isConfirmPasswordObscure.notifier)
-                                  .state = true;
+                              ref.read(_isConfirmPassObscure.notifier).state =
+                                  true;
                             }
                           },
                           icon: Icon(
-                            ref.watch(_isConfirmPasswordObscure) == true
+                            ref.watch(_isConfirmPassObscure) == true
                                 ? CupertinoIcons.eye_fill
                                 : CupertinoIcons.eye_slash_fill,
                             color: AppColors.colorBlack.withOpacity(0.9),
