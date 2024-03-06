@@ -5,4 +5,5 @@ abstract class AppImages {
   static const attach = 'assets/svg/attach.svg';
   static const read = 'assets/svg/read.svg';
   static const unread = 'assets/svg/unread.svg';
+  static const sendMessage = 'assets/svg/send_message.svg';
 }

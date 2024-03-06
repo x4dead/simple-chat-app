@@ -24,6 +24,7 @@ class HintTextField extends StatelessWidget {
     this.prefixConstraints,
     this.focusNode,
     this.onEditingComplete,
+    this.enabled,
   }) : super(key: key);
   final String hintText;
   final int? maxLength;
@@ -44,6 +45,7 @@ class HintTextField extends StatelessWidget {
   final BoxConstraints? constraints;
   final FocusNode? focusNode;
   final BoxConstraints? prefixConstraints;
+  final bool? enabled;
   // @override
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class HintTextField extends StatelessWidget {
         borderSide: const BorderSide(width: 0, color: AppColors.colorStroke),
         gapPadding: 6);
     return TextFormField(
+      enabled: enabled,
       focusNode: focusNode,
       onEditingComplete: onEditingComplete,
       onFieldSubmitted: onFieldSubmitted,
@@ -88,6 +91,7 @@ class HintTextField extends StatelessWidget {
         suffixIcon: suffix,
         prefixIcon: prefixIcon,
         enabledBorder: border,
+        disabledBorder: border,
         border: border,
         focusedBorder: border,
         errorStyle: TextStyle(
